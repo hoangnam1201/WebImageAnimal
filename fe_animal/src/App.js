@@ -1,42 +1,24 @@
+import { useRoutes, BrowserRouter as Router } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
-import { Outlet, Route, Routes } from 'react-router-dom';
-import './App.css';
-import Banner from './Components/Banner';
-import Footer from './Components/Footer';
-import Header from './Components/Header';
-import HomePage from './Components/HomePage';
-import LoginPage from './Components/Login';
-import RegisterPage from './Components/Register';
-const LayoutHome =()=>{
-  return(
-    <>
-      <Header/>
-      <Banner/>
-      <HomePage/>
-      <Footer/>
-    </>
-  )
-}
-const LayoutAuth = ()=>{
-  return(
-    <>
-    <Header/>
-    <Outlet/>
-    </>
-  )
-}
-const App=()=> {
+import { authRoute, mainRoute } from "./Routes";
+
+const App = () => {
+  const [cookies] = useCookies(["auth"]);
+
+  const routing = useRoutes([
+    ...mainRoute(cookies.auth),
+    ...authRoute(cookies.auth),
+  ]);
+
+  return <>{routing}</>;
+};
+const AppWrapper = () => {
   return (
-    <div className="App">
-      <Routes>
-        <Route path='/' element={<LayoutHome/>}/>
-        <Route path='/auth' element={<LayoutAuth/>}>
-          <Route path='login' element={<LoginPage/>}/>
-          <Route path='register' element={<RegisterPage/>}/>
-        </Route>
-      </Routes>
-    </div>
+    <Router>
+      <App />
+    </Router>
   );
-}
+};
 
-export default App;
+export default AppWrapper;
