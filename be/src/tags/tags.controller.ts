@@ -82,6 +82,12 @@ export class TagsController {
     return await this.tagService.getTags(dto.take, dto.page * dto.take);
   }
 
+  @Get('get-all')
+  @ApiTags('tags')
+  async getAll() {
+    return await this.tagService.getAllTags();
+  }
+
   @Get('find')
   @ApiTags('tags')
   async find(@Query() dto: TagFindDto) {

@@ -18,12 +18,12 @@ export class IsTagNameAlreadyExistConstraint
     value: any,
     validationArguments?: ValidationArguments,
   ): boolean | Promise<boolean> {
-    return this.prisma.tag
-      .findFirst({ where: { name: value } })
-      .then((user) => {
-        if (user) return false;
-        return true;
-      });
+    return this.prisma.tag.findFirst({ where: { name: value } }).then((tag) => {
+      console.log(value);
+      console.log(tag);
+      if (tag) return false;
+      return true;
+    });
   }
 
   defaultMessage?(validationArguments?: ValidationArguments): string {

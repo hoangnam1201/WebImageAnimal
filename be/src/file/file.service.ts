@@ -9,6 +9,7 @@ export class FileService {
   public storage: Bucket;
   public imageFileTypes = [
     { mineType: 'image/apng', extension: '.apng' },
+    { mineType: 'image/png', extension: '.png' },
     { mineType: 'image/avif', extension: '.avif' },
     { mineType: 'image/gif', extension: '.gif' },
     { mineType: 'image/jpeg', extension: '.jpg' },

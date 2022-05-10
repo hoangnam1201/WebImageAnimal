@@ -1,11 +1,15 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
+  Get,
   HttpException,
+  InternalServerErrorException,
   Param,
   Post,
   Put,
+  Query,
   Req,
   UseGuards,
   UseInterceptors,
@@ -17,6 +21,7 @@ import { JwtGaurd } from 'src/auth/gaurds/jwt.gaurd';
 import { FileService } from 'src/file/file.service';
 import { Stream, Readable } from 'stream';
 import { PictureCreateDto } from './dto/picture-create.dto';
+import { PictureGetDto } from './dto/picture-get.dto';
 import { PictureUpdateDto } from './dto/picture-update.dto';
 import { PicturesService } from './pictures.service';
 
@@ -26,6 +31,16 @@ export class PicturesController {
     private pictureService: PicturesService,
     private fileService: FileService,
   ) {}
+
+  @Post('/get')
+  @ApiTags('pictures')
+  async get(@Body() dto: PictureGetDto) {
+    return await this.pictureService.filter(
+      dto.tagIds,
+      dto.page * dto.take,
+      dto.take,
+    );
+  }
 
   @Post()
   @UseGuards(JwtGaurd)
@@ -38,12 +53,15 @@ export class PicturesController {
     if (!file) throw new HttpException('file is required', 400);
 
     const user = req.user;
-    let picture = await this.pictureService.create(
-      dto.title,
-      user['id'],
-      '',
-      dto.tags,
-    );
+    console.log(dto.tags);
+    let picture = await this.pictureService
+      .create(dto.title, user['id'], '', dto.tags)
+      .catch((err) => {
+        console.log(err);
+        if (err.code === 'P2025')
+          throw new BadRequestException('not found tag in tags');
+        throw new InternalServerErrorException();
+      });
     //uploadfile
     const stream = Readable.from(file.buffer);
     const fileType = this.fileService.getTypeFile(file.originalname);
@@ -64,7 +82,12 @@ export class PicturesController {
   @ApiBearerAuth()
   @ApiParam({ name: 'id' })
   async delete(@Param() param) {
-    return await this.pictureService.delete(param.id);
+    const picture = await this.pictureService.delete(param.id);
+    await this.fileService.deleteFile(
+      'images',
+      `${picture.id}${this.fileService.getTypeFile(picture.src).extension}`,
+    );
+    return picture;
   }
 
   @Put(':id')

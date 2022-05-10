@@ -38,9 +38,6 @@ export class TagsService {
   }
 
   async removeTag(id: string) {
-    await this.prisma.picture.deleteMany({
-      where: { tagIds: { has: id } },
-    });
     return await this.prisma.tag.delete({ where: { id: id } });
   }
 

@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { IsEmailAlreadyExistConstraint } from './is-email-already-exist.constraint copy';
+import { IsEmailAlreadyExistConstraint } from './is-email-already-exist.constraint';
 import { IsTagNameAlreadyExistConstraint } from './is-tag-name-already-exist.constraint';
 
 @Module({

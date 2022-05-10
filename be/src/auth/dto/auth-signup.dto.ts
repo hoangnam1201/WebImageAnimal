@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsString } from 'class-validator';
-import { IsEmailAlreadyExist } from 'src/decorators/is-email-already-exist.constraint copy';
+import { IsEmailAlreadyExist } from 'src/decorators/is-email-already-exist.constraint';
 
 export class AuthSignupDto {
   @IsString()

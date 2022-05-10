@@ -5,9 +5,9 @@ import { IsTagNameAlreadyExist } from 'src/decorators/is-tag-name-already-exist.
 export class TagCreateDto {
   @IsString()
   @ApiProperty()
+  @IsTagNameAlreadyExist()
   name: string;
 
   @ApiProperty({ format: 'binary' })
-  @IsTagNameAlreadyExist()
   file: string;
 }
