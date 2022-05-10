@@ -17,12 +17,22 @@ export class TagsService {
     });
   }
 
-  async getTags(take: number, skip: number) {
+  async getTags(
+    take: number,
+    skip: number,
+  ): Promise<{ records: any[]; count: number }> {
     return {
       records: await this.prisma.tag.findMany({
         take: take,
         skip: skip,
       }),
+      count: await this.prisma.tag.count(),
+    };
+  }
+
+  async getAllTags(): Promise<{ records: any[]; count: number }> {
+    return {
+      records: await this.prisma.tag.findMany(),
       count: await this.prisma.tag.count(),
     };
   }

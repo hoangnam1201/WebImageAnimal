@@ -41,4 +41,12 @@ export class PicturesService {
       data: { src },
     });
   }
+
+  async getById(id: string) {
+    return await this.prisma.picture.findUnique({ where: { id } });
+  }
+
+  async get(skip: number, take: number) {
+    return await this.prisma.picture.findMany({ take, skip });
+  }
 }

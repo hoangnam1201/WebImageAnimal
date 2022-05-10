@@ -6,6 +6,12 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  //cors
+  app.enableCors({
+    origin: '*',
+    allowedHeaders: ['Authorization', 'Content-Type'],
+    methods: ['GET', 'PUT', 'HEAD', 'PATCH', 'POST', 'DELETE'],
+  });
   //swagger
   const config = new DocumentBuilder()
     .setTitle('Animal web API')

@@ -10,7 +10,6 @@ import { LocalStategy } from './stategies/local.stategy';
 
 @Module({
   imports: [
-    DecoratorsModule,
     PassportModule,
     ConfigModule,
     JwtModule.registerAsync({
