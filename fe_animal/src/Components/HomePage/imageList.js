@@ -40,7 +40,7 @@ const ImageList = () => {
     },
   ];
   return (
-    <div className="text-white bg-gray-900 py-12">
+    <div className="text-white bg-black py-12">
       <div className="flex justify-between mx-16 items-center">
         <div>
           <h2 className="font-bold text-4xl mb-4">
