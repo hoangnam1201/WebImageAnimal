@@ -9,6 +9,8 @@ import UserList from "../Components/Admin/userList";
 import TagCreate from "../Components/Admin/tag/tagCreate";
 import PictureList from "../Components/Admin/picture/pictureList";
 import CreatePicture from "../Components/Admin/picture/createPicture";
+import LayoutGallery from "../Layouts/layoutGallery";
+import GalleryImage from "../Components/Gallery";
 
 export const mainRoute = (auth) => [
   { path: "home", element: <Navigate to="/" /> },
@@ -58,3 +60,11 @@ export const adminRoute = () => {
     },
   ];
 };
+
+export const galleryRoute = () => [
+  {
+    path: "/photos",
+    element: <LayoutGallery />,
+    children: [{ path: "", element: <GalleryImage /> }],
+  },
+];
