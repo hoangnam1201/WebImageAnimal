@@ -25,16 +25,16 @@ export class TagsService {
       records: await this.prisma.tag.findMany({
         take: take,
         skip: skip,
+        include: { _count: { select: { pictures: true } } },
       }),
       count: await this.prisma.tag.count(),
     };
   }
 
-  async getAllTags(): Promise<{ records: any[]; count: number }> {
-    return {
-      records: await this.prisma.tag.findMany(),
-      count: await this.prisma.tag.count(),
-    };
+  async getAllTags() {
+    return await this.prisma.tag.findMany({
+      include: { _count: { select: { pictures: true } } },
+    });
   }
 
   async removeTag(id: string) {
@@ -44,6 +44,7 @@ export class TagsService {
   async updateTag(id: string, updateData: { name: string } | { src: string }) {
     return await this.prisma.tag.update({
       where: { id },
+      include: { _count: { select: { pictures: true } } },
       data: { ...updateData },
     });
   }

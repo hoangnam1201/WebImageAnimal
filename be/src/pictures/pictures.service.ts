@@ -11,11 +11,17 @@ export class PicturesService {
     authorId: string,
     src: string,
     tagIds: { id: string }[],
+    accepted: boolean,
   ) {
     return await this.prisma.picture.create({
+      include: {
+        tags: { select: { id: true, name: true, src: true } },
+        author: { select: { id: true, username: true, email: true } },
+      },
       data: {
         title,
         author: { connect: { id: authorId } },
+        accepted,
         src,
         tags: {
           connect: tagIds,
@@ -25,13 +31,33 @@ export class PicturesService {
   }
 
   async delete(id: string) {
-    return await this.prisma.picture.delete({ where: { id } });
+    return await this.prisma.picture.delete({
+      where: { id },
+      include: {
+        tags: { select: { id: true, name: true, src: true } },
+        author: { select: { id: true, username: true, email: true } },
+      },
+    });
   }
 
   async update(id: string, dto: PictureUpdateDto) {
     return await this.prisma.picture.update({
       where: { id: id },
-      data: { title: dto.title, tags: { connect: dto.tags } },
+      data: { title: dto.title, tags: { set: dto.tags } },
+      include: {
+        tags: { select: { id: true, name: true, src: true } },
+        author: { select: { id: true, username: true, email: true } },
+      },
+    });
+  }
+  async acceptPicture(id: string) {
+    return await this.prisma.picture.update({
+      where: { id: id },
+      data: { accepted: true },
+      include: {
+        tags: { select: { id: true, name: true, src: true } },
+        author: { select: { id: true, username: true, email: true } },
+      },
     });
   }
 
@@ -39,13 +65,20 @@ export class PicturesService {
     return await this.prisma.picture.update({
       where: { id: id },
       data: { src },
+      include: {
+        tags: { select: { id: true, name: true, src: true } },
+        author: { select: { id: true, username: true, email: true } },
+      },
     });
   }
 
   async getById(id: string) {
     return await this.prisma.picture.findUnique({
       where: { id },
-      include: { tags: { select: { id: true, name: true, src: true } } },
+      include: {
+        tags: { select: { id: true, name: true, src: true } },
+        author: { select: { id: true, username: true, email: true } },
+      },
     });
   }
 
@@ -54,33 +87,44 @@ export class PicturesService {
       records: await this.prisma.picture.findMany({
         take,
         skip,
-        include: { tags: { select: { id: true, name: true, src: true } } },
+        include: {
+          tags: { select: { id: true, name: true, src: true } },
+          author: { select: { id: true, username: true, email: true } },
+        },
       }),
       count: await this.prisma.picture.count(),
     };
   }
 
-  async filter(tagIds: string[], skip: number, take: number) {
-    console.log(tagIds);
-    if (tagIds.length)
-      return {
-        records: await this.prisma.picture.findMany({
-          where: { tagIds: { hasEvery: tagIds } },
-          include: { tags: { select: { id: true, name: true, src: true } } },
-          skip,
-          take,
-        }),
-        count: await this.prisma.picture.count({
-          where: { tagIds: { hasEvery: tagIds } },
-        }),
-      };
+  async filter(
+    tagIds: string[],
+    authorId: string,
+    skip: number,
+    take: number,
+    accepted: boolean,
+  ) {
+    const tagQuery = tagIds?.length ? { hasSome: tagIds } : undefined;
+
     return {
       records: await this.prisma.picture.findMany({
-        include: { tags: { select: { id: true, name: true, src: true } } },
+        where: { tagIds: tagQuery, authorId: authorId, accepted: accepted },
+        include: {
+          tags: {
+            select: { id: true, name: true, src: true },
+          },
+          author: { select: { id: true, username: true, email: true } },
+        },
+        orderBy: [{ createdAt: 'desc' }],
         skip,
         take,
       }),
-      count: await this.prisma.picture.count(),
+      count: await this.prisma.picture.count({
+        where: {
+          tagIds: { hasEvery: tagIds },
+          authorId: authorId,
+          accepted: accepted,
+        },
+      }),
     };
   }
 }

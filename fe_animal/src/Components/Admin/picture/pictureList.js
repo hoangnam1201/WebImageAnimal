@@ -18,6 +18,7 @@ import {
 } from "../../../store/slices/pictureSlice";
 import { selectPicture } from "../../../store/slices/pictureSlice";
 import { getTag } from "../../../store/slices/tagSlice";
+import FilterBox from "./filterBox";
 
 const PictureList = () => {
   const pictureData = useSelector(pictureSelector);
@@ -42,9 +43,10 @@ const PictureList = () => {
   }, [pictureData, reset]);
 
   useEffect(() => {
+    console.log("get");
     dispatch(
       getPicutres({
-        tagIds: [],
+        filter: pictureData.filter,
         page: pictureData.page,
         take: pictureData.take,
       })
@@ -54,8 +56,8 @@ const PictureList = () => {
   const onRowsPerPageChange = (e) => {
     dispatch(
       getPicutres({
-        tagIds: [],
-        page: pictureData.page,
+        filter: pictureData.filter,
+        page: 0,
         take: e.target.value,
       })
     );
@@ -64,7 +66,7 @@ const PictureList = () => {
   const onPageChange = (e, value) => {
     dispatch(
       getPicutres({
-        tagIds: [],
+        filter: pictureData.filter,
         page: value,
         take: pictureData.take,
       })
@@ -115,37 +117,23 @@ const PictureList = () => {
 
   return (
     <div className="p-4">
-      <div className=" shadow p-4 flex justify-between items-center">
-        <p className=" text-xl font-semibold">Picture Management</p>
-        <Link
-          className="py-2 px-10 text-bule shadow-md font-semibold rounded-sm block"
-          href="/admin/pictures/create"
-          underline="none"
-        >
-          New Picture
-        </Link>
-      </div>
-      <div
-        className={`${
-          pictureData?.loading === "loading" ? "visible" : "invisible"
-        }`}
-      >
-        <LinearProgress />
-      </div>
-      {pictureData?.loading === "error" && (
-        <Alert severity="error" className="uppercase">
-          {pictureData?.error}
-        </Alert>
-      )}
-      {pictureData?.loading === "success" && (
-        <Alert severity="success" className="uppercase">
-          Create success
-        </Alert>
-      )}
       <div className="md:flex md:gap-4 mt-5">
-        <div className="w-0 grow shadow p-4">
+        <div className="w-0 grow shadow p-4 min-w-min ">
           <div>
-            <p className="font-semibold"> Tag List </p>
+            <FilterBox
+              onChange={(value) => {
+                dispatch(
+                  getPicutres({
+                    filter: {
+                      authorId: value.authorId,
+                      tagIds: value.tagIds,
+                    },
+                    page: pictureData.page,
+                    take: pictureData.take,
+                  })
+                );
+              }}
+            />
           </div>
           <div className="flex w-full mt-4 flex-col">
             <div className="w-full font-semibold border-b-2 flex gap-4 p-3">
@@ -182,7 +170,7 @@ const PictureList = () => {
                       <p>{new Date(p.createdAt).toLocaleDateString()}</p>
                     </div>
                     <div className="w-1/3">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         {p.tags.map((t, _index) => (
                           <div
                             key={_index}
@@ -223,13 +211,19 @@ const PictureList = () => {
                   key={pictureData.current.id}
                 />
                 <div className="flex gap-4">
+                  <p className="text-gray-400 font-thin">Poster: </p>
+                  <p className=" tracking-wide">
+                    {pictureData.current.author?.username}
+                  </p>
+                </div>
+                <div className="flex gap-4">
                   <p className="text-gray-400 font-thin">Title: </p>
                   <div className="w-0 grow">
                     <textarea
                       rows={3}
                       className={`w-full p-2 resize-none scroll scrollbar scrollbar-1 outline-none focus:text-gray-500 focus:font-normal focus:border-2 shadow-md text-gray-500 font-light ${
                         errors.title
-                          ? "border-2 border-red-500"
+                          ? "border-2 border-red-600"
                           : "border-blue-500"
                       }`}
                       {...register("title", {
@@ -290,14 +284,14 @@ const PictureList = () => {
                       className="py-2 px-10 text-white bg-blue-400 hover:bg-blue-500 hover:font-medium shadow-sm rounded-sm"
                       onClick={handleSubmit(updateHandler)}
                     >
-                      update
+                      Update
                     </button>
                   )}
                   <button
                     className="py-2 px-10 text-red-400 shadow-md hover:shadow-lg hover:font-medium rounded-sm"
                     onClick={() => deleteHandler(pictureData?.current?.id)}
                   >
-                    delete
+                    Delete
                   </button>
                 </div>
               </div>

@@ -10,7 +10,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 @ValidatorConstraint({ async: true })
-export class IsTagNameAlreadyExistConstraint
+export class IsUsernameAlreadyExistConstraint
   implements ValidatorConstraintInterface
 {
   constructor(private prisma: PrismaService) {}
@@ -18,25 +18,27 @@ export class IsTagNameAlreadyExistConstraint
     value: any,
     validationArguments?: ValidationArguments,
   ): boolean | Promise<boolean> {
-    return this.prisma.tag.findFirst({ where: { name: value } }).then((tag) => {
-      if (tag) return false;
-      return true;
-    });
+    return this.prisma.user
+      .findFirst({ where: { email: value } })
+      .then((user) => {
+        if (user) return false;
+        return true;
+      });
   }
 
   defaultMessage?(validationArguments?: ValidationArguments): string {
-    return 'tag name already exist';
+    return 'Email already exist';
   }
 }
 
-export function IsTagNameAlreadyExist(validationOption?: ValidationOptions) {
+export function IsUsernameAlreadyExist(validationOption?: ValidationOptions) {
   return function (object: object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,
       options: validationOption,
       constraints: [],
-      validator: IsTagNameAlreadyExistConstraint,
+      validator: IsUsernameAlreadyExistConstraint,
     });
   };
 }

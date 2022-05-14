@@ -31,8 +31,13 @@ export class AuthController {
   @ApiBody({ type: AuthSigninDto })
   async signin(@Req() req: Request) {
     const user = req.user;
+    console.log(user);
     return {
-      token: await this.authService.getToken(user['id'], user['email']),
+      token: await this.authService.getToken(
+        user['id'],
+        user['email'],
+        user['role'],
+      ),
       user,
     };
   }

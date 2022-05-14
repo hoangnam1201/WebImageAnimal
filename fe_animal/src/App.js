@@ -5,12 +5,12 @@ import { Provider } from "react-redux";
 import store from "./store";
 
 const App = () => {
-  const [cookies] = useCookies(["auth"]);
+  const [cookies] = useCookies(["infoUser"]);
 
   const routing = useRoutes([
-    ...mainRoute(cookies.auth),
-    ...authRoute(cookies.auth),
-    ...adminRoute(cookies.auth),
+    ...mainRoute(cookies.infoUser),
+    ...authRoute(cookies.infoUser),
+    ...adminRoute(cookies.infoUser),
     ...galleryRoute(),
   ]);
 

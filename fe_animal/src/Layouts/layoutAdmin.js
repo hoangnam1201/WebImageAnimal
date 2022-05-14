@@ -15,6 +15,7 @@ const layoutAdmin = () => {
       <div className="flex grow h-0 flex-wrap overflow-y-auto">
         <Header className="flex w-full justify-between items-center bg-gray-600 shadow-lg grow-0" />
         <Nav
+          orientation="vertical"
           className="w-1/6 h-full shadow-lg pt-4 sticky top-0 self-start"
           linkList={linkList}
         />

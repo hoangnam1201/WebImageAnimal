@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Controller,
   Get,
   InternalServerErrorException,
@@ -18,8 +19,9 @@ export class FileController {
   @Get('dowload/:filename')
   @ApiParam({ name: 'filename' })
   download(@Param() param, @Res() res: Response) {
-    try {
-      const file = this.fileService.storage.file(`images/${param.filename}`);
+    const file = this.fileService.storage.file(`images/${param.filename}`);
+    file.exists().then((e) => {
+      if (!e[0]) return res.sendStatus(404);
       const fileType = this.fileService.getTypeFile(file.name);
       res.setHeader('content-type', fileType.mineType);
       res.set({
@@ -27,25 +29,20 @@ export class FileController {
         'Content-Disposition': `attachment; filename="image.${fileType.extension}"`,
       });
       file.createReadStream().pipe(res);
-    } catch {
-      throw new InternalServerErrorException();
-    }
+    });
   }
 
   @Get(':path')
   @ApiParam({ name: 'path' })
   get(@Param() param, @Res() res: Response) {
-    try {
-      const file = this.fileService.storage.file(param.path);
-      if (!file) throw new NotFoundException();
-      console.log(file.name);
+    const file = this.fileService.storage.file(param.path);
+    file.exists().then((e) => {
+      if (!e[0]) return res.sendStatus(404);
       res.setHeader(
         'content-type',
         this.fileService.getTypeFile(file.name).mineType,
       );
       file.createReadStream().pipe(res);
-    } catch {
-      throw new InternalServerErrorException();
-    }
+    });
   }
 }

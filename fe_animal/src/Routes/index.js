@@ -11,6 +11,8 @@ import PictureList from "../Components/Admin/picture/pictureList";
 import CreatePicture from "../Components/Admin/picture/createPicture";
 import LayoutGallery from "../Layouts/layoutGallery";
 import GalleryImage from "../Components/Gallery";
+import LayoutPictureManagement from "../Layouts/layoutPictureManagement";
+import RequestedPictures from "../Components/Admin/picture/requestedPictures";
 
 export const mainRoute = (auth) => [
   { path: "home", element: <Navigate to="/" /> },
@@ -21,10 +23,10 @@ export const mainRoute = (auth) => [
   },
 ];
 
-export const authRoute = () => [
+export const authRoute = (auth) => [
   {
     path: "auth",
-    element: <LayoutAuth />,
+    element: !auth?.user ? <LayoutAuth /> : <Navigate to="/" />,
     children: [
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
@@ -32,11 +34,12 @@ export const authRoute = () => [
   },
 ];
 
-export const adminRoute = () => {
+export const adminRoute = (auth) => {
   return [
     {
       path: "admin",
-      element: <LayoutAdmin />,
+      element:
+        auth?.user?.role === "ADMIN" ? <LayoutAdmin /> : <Navigate to="/" />,
       children: [
         { path: "", element: <Navigate to="/admin/tags/list" /> },
         {
@@ -51,7 +54,14 @@ export const adminRoute = () => {
           path: "pictures",
           children: [
             { path: "", element: <Navigate to="list" /> },
-            { path: "list", element: <PictureList /> },
+            {
+              path: "list",
+              element: <LayoutPictureManagement />,
+              children: [
+                { path: "", element: <PictureList /> },
+                { path: "requesteds", element: <RequestedPictures /> },
+              ],
+            },
             { path: "create", element: <CreatePicture /> },
           ],
         },

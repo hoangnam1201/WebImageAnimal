@@ -1,6 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsNumber, IsString, Length } from 'class-validator';
+import {
+  IsArray,
+  IsBoolean,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator';
 
 export class PictureGetDto {
   @ApiProperty()
@@ -15,7 +22,16 @@ export class PictureGetDto {
   take: number;
 
   @ApiProperty()
+  @IsString()
+  @IsOptional()
+  authorId: string;
+
+  @ApiProperty()
   @IsNumber()
   @Type(() => Number)
   page: number;
+
+  @ApiProperty()
+  @IsBoolean()
+  accepted: boolean;
 }

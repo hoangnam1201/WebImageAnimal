@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../Assets/logo.png";
 import GoogleIcon from "@mui/icons-material/Google";
 import { useCookies } from "react-cookie";
-import { login } from "../../api/userApi";
+import { login, userApi } from "../../api/userApi";
 
 const LoginPage = () => {
   const [cookies, setCookies] = useCookies(["infoUser"]);
@@ -21,8 +21,8 @@ const LoginPage = () => {
     //validators
     setLoginState({ status: 1 });
     try {
-      const res = await login(loginData);
-      setCookies("infoUser", JSON.stringify(res?.data));
+      const res = await userApi.login(loginData);
+      setCookies("infoUser", JSON.stringify(res?.data), { path: "/" });
       setLoginState({ status: 0 });
       navigate("/", {
         state: { msg: "Login success", status: 0 },

@@ -1,12 +1,11 @@
-import { Bucket } from '@google-cloud/storage';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FirebaseAdmin, InjectFirebaseAdmin } from 'nestjs-firebase';
 import { Stream } from 'stream';
 
 @Injectable()
 export class FileService {
-  public storage: Bucket;
+  public storage;
   public imageFileTypes = [
     { mineType: 'image/apng', extension: '.apng' },
     { mineType: 'image/png', extension: '.png' },
@@ -54,6 +53,8 @@ export class FileService {
 
   async deleteFile(path: string, fileName: string) {
     const file = this.storage.file(`${path}/${fileName}`);
+    const e = await file.exists();
+    if (!e[0]) throw new NotFoundException();
     return await file.delete();
   }
 

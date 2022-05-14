@@ -19,7 +19,7 @@ import { ApiBearerAuth, ApiConsumes, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { JwtGaurd } from 'src/auth/gaurds/jwt.gaurd';
 import { FileService } from 'src/file/file.service';
-import { Stream, Readable } from 'stream';
+import { Readable } from 'stream';
 import { PictureCreateDto } from './dto/picture-create.dto';
 import { PictureGetDto } from './dto/picture-get.dto';
 import { PictureUpdateDto } from './dto/picture-update.dto';
@@ -32,17 +32,19 @@ export class PicturesController {
     private fileService: FileService,
   ) {}
 
-  @Post('/get')
+  @Post('get')
   @ApiTags('pictures')
   async get(@Body() dto: PictureGetDto) {
     return await this.pictureService.filter(
       dto.tagIds,
+      dto.authorId,
       dto.page * dto.take,
       dto.take,
+      dto.accepted,
     );
   }
 
-  @Post()
+  @Post('create')
   @UseGuards(JwtGaurd)
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
@@ -53,9 +55,14 @@ export class PicturesController {
     if (!file) throw new HttpException('file is required', 400);
 
     const user = req.user;
-    console.log(dto.tags);
     let picture = await this.pictureService
-      .create(dto.title, user['id'], '', dto.tags)
+      .create(
+        dto.title,
+        user['id'],
+        '',
+        dto.tags,
+        user['role'] === 'ADMIN' ? true : false,
+      )
       .catch((err) => {
         console.log(err);
         if (err.code === 'P2025')
@@ -97,5 +104,14 @@ export class PicturesController {
   @ApiParam({ name: 'id' })
   async update(@Param() Param, @Body() dto: PictureUpdateDto) {
     return await this.pictureService.update(Param.id, dto);
+  }
+
+  @Put('accept/:id')
+  @UseGuards(JwtGaurd)
+  @ApiTags('pictures')
+  @ApiBearerAuth()
+  @ApiParam({ name: 'id' })
+  async accept(@Param() Param) {
+    return await this.pictureService.acceptPicture(Param.id);
   }
 }

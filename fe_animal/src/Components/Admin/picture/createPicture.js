@@ -4,7 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { pictureSelector, tagSelector } from "../../../store/selectors";
-import { adminCreatePicture } from "../../../store/slices/pictureSlice";
+import { createPicture } from "../../../store/slices/pictureSlice";
 import { getTag } from "../../../store/slices/tagSlice";
 
 const CreatePicture = () => {
@@ -53,7 +53,7 @@ const CreatePicture = () => {
       fd.append(`tags[${index}][id]`, t.id);
     });
 
-    dispatch(adminCreatePicture(fd));
+    dispatch(createPicture(fd));
   };
 
   return (

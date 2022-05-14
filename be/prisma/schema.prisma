@@ -19,7 +19,7 @@ enum Role {
 model User {
   id           String    @id @default(auto()) @map("_id") @db.ObjectId
   role         Role      @default(USER)
-  username     String
+  username     String    @unique
   email        String    @unique
   password     String
   refreshToken String?
@@ -34,6 +34,7 @@ model Picture {
   src       String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  accepted  Boolean  @default(false)
   //relations
   tags      Tag[]    @relation(fields: [tagIds], references: [id])
   tagIds    String[] @db.ObjectId

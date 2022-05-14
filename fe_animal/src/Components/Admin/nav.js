@@ -3,7 +3,7 @@ import Link from "@mui/material/Link";
 import Tabs from "@mui/material/Tabs";
 import React, { useState } from "react";
 
-const Nav = ({ linkList, ...rest }) => {
+const Nav = ({ linkList, orientation = "horizontal", ...rest }) => {
   const [value, setValue] = useState(0);
   useState(() => {
     linkList?.forEach((value, index) => {
@@ -14,7 +14,7 @@ const Nav = ({ linkList, ...rest }) => {
   return (
     <div {...rest}>
       <Tabs
-        orientation="vertical"
+        orientation={orientation}
         value={value}
         onChange={(e, newValue) => {
           setValue(newValue);

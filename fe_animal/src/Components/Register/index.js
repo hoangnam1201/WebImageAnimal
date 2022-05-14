@@ -1,7 +1,7 @@
 import { Button, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { register } from "../../api/userApi";
+import { register, userApi } from "../../api/userApi";
 import Logo from "../../Assets/logo.png";
 
 const RegisterPage = () => {
@@ -18,7 +18,7 @@ const RegisterPage = () => {
     //validators
     setRegisterState({ status: 1 });
     try {
-      await register(registerData);
+      await userApi.register(registerData);
       setRegisterState({ status: 0 });
       navigate("/auth/login", {
         state: { msg: "registor success", status: 0 },
