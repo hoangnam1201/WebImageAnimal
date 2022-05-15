@@ -31,6 +31,19 @@ export const getPicutres = createAsyncThunk(
   }
 );
 
+export const getMyPicutres = createAsyncThunk(
+  "pictures/get",
+  async ({ filter: { tagIds }, page, take }, { rejectWithValue, dispatch }) => {
+    dispatch(savePageData({ page, take, filter: { tagIds } }));
+    const response = await pictureApi.getMyPictures(tagIds, page, take).catch((e) => {
+      if (e.response.status === 400)
+        throw rejectWithValue(e.response.data.message[0]);
+      throw rejectWithValue(e.response.data.message);
+    });
+    return response.data;
+  }
+);
+
 export const getRequestedPictures = createAsyncThunk(
   "pictures/getRequesteds",
   async ({ page, take }, { rejectWithValue, dispatch }) => {
@@ -126,7 +139,19 @@ const pictureSlice = createSlice({
     },
   },
   extraReducers: {
-    [getPicutres.pending]: (state) => {
+    [getMyPicutres.pending]: (state) => {
+      state.loading = "loading";
+    },
+    [getMyPicutres.rejected]: (state, action) => {
+      state.loading = "error";
+      state.error = action.payload;
+    },
+    [getMyPicutres.fulfilled]: (state, action) => {
+      state.loading = "idle";
+      state.list = action.payload.records;
+      state.total = action.payload.count;
+    },
+    [getMyPicutres.pending]: (state) => {
       state.loading = "loading";
     },
     [getPicutres.rejected]: (state, action) => {

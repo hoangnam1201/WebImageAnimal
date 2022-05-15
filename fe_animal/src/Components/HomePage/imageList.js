@@ -40,7 +40,7 @@ const ImageList = () => {
     },
   ];
   return (
-    <div className="text-white bg-black py-12">
+    <div className="p-12 text-gray-500">
       <div className="flex justify-between mx-16 items-center">
         <div>
           <h2 className="font-bold text-4xl mb-4">
@@ -60,7 +60,7 @@ const ImageList = () => {
           return (
             <div className="pt-3 relative" key={index}>
               <img src={item.imgSrc} className="w-full" />
-              <h2 className="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl font-bold text-shadow-lg">
+              <h2 className="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl font-bold text-shadow-lg text-white">
                 {item.name}
               </h2>
             </div>

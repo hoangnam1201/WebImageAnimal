@@ -44,6 +44,20 @@ export class PicturesController {
     );
   }
 
+  @Post('get-my-pictures')
+  @UseGuards(JwtGaurd)
+  @ApiTags('pictures')
+  async getMyPicture(@Body() dto: PictureGetDto, @Req() req: Request) {
+    const user = req.user;
+    return await this.pictureService.filter(
+      dto.tagIds,
+      user['id'],
+      dto.page * dto.take,
+      dto.take,
+      dto.accepted,
+    );
+  }
+
   @Post('create')
   @UseGuards(JwtGaurd)
   @ApiConsumes('multipart/form-data')

@@ -19,6 +19,14 @@ export const pictureApi = {
       accepted,
     });
   },
+  getMyPictures: async (tagIds = [], page, take, accepted = true) => {
+    return await instance.post("/pictures/get-my-pictures", {
+      tagIds,
+      page,
+      take,
+      accepted,
+    });
+  },
   updateInfo: async (id, data) => {
     return await instance.put("/pictures/" + id, data);
   },

@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import LayoutHome from "../Layouts/layoutHome";
+import LayoutDefault from "../Layouts/layoutDefault";
 import LayoutAuth from "../Layouts/layoutAuth";
 import LoginPage from "../Components/Login";
 import RegisterPage from "../Components/Register";
@@ -13,13 +13,21 @@ import GalleryImage from "../Components/Gallery";
 import LayoutPictureManagement from "../Layouts/layoutPictureManagement";
 import RequestedPictures from "../Components/Admin/picture/requestedPictures";
 import UserList from "../Components/Admin/user/userList";
+import HomePage from "../Components/HomePage";
+import MyPictureList from "../Components/MyPictureList";
 
 export const mainRoute = (auth) => [
   { path: "home", element: <Navigate to="/" /> },
   {
     path: "/",
-    element: <LayoutHome />,
-    children: [{ path: "", element: <LayoutHome /> }],
+    element: <LayoutDefault />,
+    children: [
+      { path: "", element: <HomePage /> },
+      {
+        path: "my-pictures",
+        element: auth ? <MyPictureList /> : <Navigate to="/" />,
+      },
+    ],
   },
 ];
 

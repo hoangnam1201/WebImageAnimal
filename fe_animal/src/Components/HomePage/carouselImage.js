@@ -14,7 +14,7 @@ import Image5 from "../../Assets/image5.jpg";
 
 const CarouselImage = () => {
   return (
-    <div className="text-white bg-black py-12">
+    <div className="text-gray-700 py-12 shadow-md">
       <div className="flex justify-between mx-16 items-center">
         <div>
           <h2 className="font-bold text-4xl mb-4">Top free pics this week</h2>
@@ -27,15 +27,15 @@ const CarouselImage = () => {
           More pictures
         </Button>
       </div>
-      <div className="py-8 border-b-2 border-gray-400">
+      <div className="py-8 px-12">
         <Swiper
           modules={[Navigation]}
           spaceBetween={10}
           slidesPerView={4}
           navigation
         >
-          <SwiperSlide>
-            <img src={Image1} alt="image1" />
+          <SwiperSlide className="h-full">
+            <img src={Image1} alt="image1"  className="h-full"/>
           </SwiperSlide>
           <SwiperSlide>
             <img src={Image2} alt="image2" />
@@ -51,7 +51,7 @@ const CarouselImage = () => {
           </SwiperSlide>
         </Swiper>
       </div>
-      <div className="flex justify-between items-center px-20 py-20 border-b-2 border-gray-400">
+      {/* <div className="flex justify-between items-center px-20 py-20 border-b-2 border-gray-400">
         <div>
           <h2 className="font-bold text-xl">
             Get first access to free photos and other Burst content.
@@ -68,7 +68,7 @@ const CarouselImage = () => {
             Submit
           </Button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
