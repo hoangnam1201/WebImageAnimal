@@ -1,8 +1,9 @@
-import { Alert, LinearProgress, Link } from "@mui/material";
-import { current } from "@reduxjs/toolkit";
+import { Alert, LinearProgress } from "@mui/material";
+import LinkMUI from "@mui/material/Link";
 import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { tagSelector } from "../../../store/selectors";
 import {
@@ -101,8 +102,7 @@ const TagList = () => {
         <p className=" text-xl font-semibold">Tag Management</p>
         <Link
           className="py-2 px-10 text-bule shadow-md font-semibold rounded-sm block"
-          href="/admin/tags/create"
-          underline="none"
+          to="/admin/tags/create"
         >
           New Tag
         </Link>
@@ -129,8 +129,8 @@ const TagList = () => {
           <p className="font-semibold"> Tag List </p>
           <div className="flex w-full mt-4 flex-col">
             <div className="flex gap-4 w-full font-semibold border-b-2 p-3">
-              <p className="w-2/3">name</p>
-              <p className="w-1/3">picture number</p>
+              <p className="w-2/3">Name</p>
+              <p className="w-1/3">Number of pictures</p>
             </div>
             {tagData?.list.map((tag, index) => {
               const { name, _count } = tag;
@@ -179,9 +179,9 @@ const TagList = () => {
                 </div>
                 <div className="flex gap-3">
                   <p className="text-gray-400">src: </p>
-                  <Link href={tagData?.current?.src} target="_blank">
+                  <LinkMUI to={tagData.current?.src} target="_blank">
                     <p className="break-all">{tagData?.current?.src}</p>
-                  </Link>
+                  </LinkMUI>
                 </div>
                 <div className="flex gap-1 items-center">
                   <p className="text-gray-400">Name: </p>
@@ -197,7 +197,7 @@ const TagList = () => {
                   <p className="text-red-400 text-sm">{errors.name?.message}</p>
                 </div>
                 <p>
-                  <span className="text-gray-400">Picture number: </span>
+                  <span className="text-gray-400">number of pictures: </span>
                   {tagData?.current?._count.pictures}
                 </p>
               </div>

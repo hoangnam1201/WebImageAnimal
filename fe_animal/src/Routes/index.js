@@ -5,7 +5,6 @@ import LoginPage from "../Components/Login";
 import RegisterPage from "../Components/Register";
 import LayoutAdmin from "../Layouts/layoutAdmin";
 import TagList from "../Components/Admin/tag/tagList";
-import UserList from "../Components/Admin/userList";
 import TagCreate from "../Components/Admin/tag/tagCreate";
 import PictureList from "../Components/Admin/picture/pictureList";
 import CreatePicture from "../Components/Admin/picture/createPicture";
@@ -13,6 +12,7 @@ import LayoutGallery from "../Layouts/layoutGallery";
 import GalleryImage from "../Components/Gallery";
 import LayoutPictureManagement from "../Layouts/layoutPictureManagement";
 import RequestedPictures from "../Components/Admin/picture/requestedPictures";
+import UserList from "../Components/Admin/user/userList";
 
 export const mainRoute = (auth) => [
   { path: "home", element: <Navigate to="/" /> },

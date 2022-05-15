@@ -27,7 +27,6 @@ export const getPicutres = createAsyncThunk(
           throw rejectWithValue(e.response.data.message[0]);
         throw rejectWithValue(e.response.data.message);
       });
-    console.log(response);
     return response.data;
   }
 );
@@ -114,6 +113,17 @@ const pictureSlice = createSlice({
       state.tagIds = action.payload.tagIds;
       state.filter = action.payload.filter;
     },
+    resetPictures: (state) => {
+      state.loading = "idle";
+      state.current = null;
+      state.filter = { authorId: undefined, tagIds: [] };
+      state.error = "";
+      state.page = 0;
+      state.take = 25;
+      state.total = 0;
+      state.tagIds = [];
+      state.list = [];
+    },
   },
   extraReducers: {
     [getPicutres.pending]: (state) => {
@@ -124,7 +134,6 @@ const pictureSlice = createSlice({
       state.error = action.payload;
     },
     [getPicutres.fulfilled]: (state, action) => {
-      console.log(action.payload, "aaa");
       state.loading = "idle";
       state.list = action.payload.records;
       state.total = action.payload.count;
@@ -150,7 +159,6 @@ const pictureSlice = createSlice({
     },
     [createPicture.fulfilled]: (state, action) => {
       state.loading = "success";
-      state.list.push(action.payload);
     },
     [deletePicture.pending]: (state) => {
       state.loading = "loading";
@@ -162,6 +170,7 @@ const pictureSlice = createSlice({
     [deletePicture.fulfilled]: (state, action) => {
       state.loading = "success";
       state.list = state.list.filter(({ id }) => id !== action.payload.id);
+      state.total = state.total - 1;
       state.current = null;
     },
     [updateInfoPicture.pending]: (state) => {
@@ -174,7 +183,6 @@ const pictureSlice = createSlice({
     [updateInfoPicture.fulfilled]: (state, action) => {
       state.loading = "success";
       const index = state.list.findIndex((t) => t.id === action.payload.id);
-      console.log(state.list[index]);
       state.list[index] = action.payload;
       state.current = action.payload;
     },
@@ -188,14 +196,13 @@ const pictureSlice = createSlice({
     [acceptPicture.fulfilled]: (state, action) => {
       state.loading = "success";
       const index = state.list.findIndex((t) => t.id === action.payload.id);
-      console.log(index);
-      console.log(state.list[index]);
       state.list[index] = action.payload;
       state.current = action.payload;
     },
   },
 });
 
-export const { selectPicture, savePageData } = pictureSlice.actions;
+export const { selectPicture, savePageData, resetPictures } =
+  pictureSlice.actions;
 
 export default pictureSlice.reducer;

@@ -101,7 +101,7 @@ const tagSlice = createSlice({
     },
     [deleteTag.fulfilled]: (state, action) => {
       state.loading = "success";
-      state.list = state.list.filter((t) => t.id !== action.payload.id);
+      state.list = state.list.filter((t) => t.id !== action.payload.id)
       state.current = null;
     },
     [updateImageTag.pending]: (state) => {

@@ -1,16 +1,21 @@
 import Tab from "@mui/material/Tab";
-import Link from "@mui/material/Link";
 import Tabs from "@mui/material/Tabs";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const Nav = ({ linkList, orientation = "horizontal", ...rest }) => {
   const [value, setValue] = useState(0);
-  useState(() => {
+  const location = useLocation();
+
+  useEffect(() => {
     linkList?.forEach((value, index) => {
-      if (window?.location?.pathname.indexOf(value.href) !== -1)
+      if (location.pathname.indexOf(value.href) !== -1) {
         setValue(index);
+        return;
+      }
     });
-  }, []);
+  }, [location]);
+
   return (
     <div {...rest}>
       <Tabs
@@ -26,7 +31,7 @@ const Nav = ({ linkList, orientation = "horizontal", ...rest }) => {
               value={index}
               label={label}
               LinkComponent={Link}
-              href={href}
+              to={href}
               key={index}
             />
           ))}

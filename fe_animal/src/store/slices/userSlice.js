@@ -14,13 +14,11 @@ const initialState = {
 export const getUsers = createAsyncThunk(
   "users/getUsers",
   async ({ searchString, page, take }, { rejectWithValue }) => {
-    console.log('aaaa')
     const res = await userApi.get(searchString, page, take).catch((e) => {
       if (e.response.status === 400)
         throw rejectWithValue(e.response.data.message[0]);
       throw rejectWithValue(e.response.data.message);
     });
-    console.log(res);
     return res.data;
   }
 );
@@ -28,7 +26,11 @@ export const getUsers = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    selectUser: (state, action) => {
+      state.current = action.payload;
+    },
+  },
   extraReducers: {
     [getUsers.pending]: (state) => {
       state.loading = "loading";
@@ -40,9 +42,10 @@ const userSlice = createSlice({
     [getUsers.fulfilled]: (state, action) => {
       state.loading = "idle";
       state.list = action.payload.records;
-      state.total = action.payload.records;
+      state.total = action.payload.count;
     },
   },
 });
 
+export const { selectUser } = userSlice.actions;
 export default userSlice.reducer;

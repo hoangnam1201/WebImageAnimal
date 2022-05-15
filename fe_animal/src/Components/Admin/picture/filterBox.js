@@ -5,15 +5,11 @@ import { userApi } from "../../../api/userApi";
 import { tagSelector } from "../../../store/selectors";
 import { getTag } from "../../../store/slices/tagSlice";
 
-const FilterBox = ({ onChange, ...rest }) => {
+const FilterBox = ({ defaultValue = {}, onChange, ...rest }) => {
   const tagData = useSelector(tagSelector);
   const [userData, setUserData] = useState({ list: [], loading: false });
   const dispatch = useDispatch();
   const [data, setData] = useState({ tagIds: [], authorName: "" });
-
-  useEffect(() => {
-    loadUsers("");
-  }, []);
 
   const loadUsers = async (value) => {
     setUserData({ ...userData, loading: true });
@@ -48,6 +44,7 @@ const FilterBox = ({ onChange, ...rest }) => {
         <div className="w-full">
           <p className="text-gray-500 text-sm">Poster:</p>
           <Autocomplete
+            defaultValue={defaultValue.author}
             onChange={(e, value) => {
               if (value === null) {
                 setData({ ...data, authorId: undefined });

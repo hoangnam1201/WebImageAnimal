@@ -23,7 +23,7 @@ model User {
   email        String    @unique
   password     String
   refreshToken String?
-  prictures    Picture[]
+  pictures     Picture[]
 
   @@map("users")
 }
@@ -39,7 +39,7 @@ model Picture {
   tags      Tag[]    @relation(fields: [tagIds], references: [id])
   tagIds    String[] @db.ObjectId
   author    User     @relation(fields: [authorId], references: [id])
-  authorId  String
+  authorId  String   @db.ObjectId
 
   @@map("pictures")
 }

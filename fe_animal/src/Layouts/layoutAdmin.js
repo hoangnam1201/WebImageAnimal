@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../Components/Admin/header";
 import Nav from "../Components/Admin/nav";
@@ -9,7 +9,8 @@ const linkList = [
   { label: "Users", href: "/admin/users" },
 ];
 
-const layoutAdmin = () => {
+const LayoutAdmin = () => {
+
   return (
     <div className="relative flex flex-col min-h-screen overflow-auto">
       <div className="flex grow h-0 flex-wrap overflow-y-auto">
@@ -27,4 +28,4 @@ const layoutAdmin = () => {
   );
 };
 
-export default layoutAdmin;
+export default LayoutAdmin;

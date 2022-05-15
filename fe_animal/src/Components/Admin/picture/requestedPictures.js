@@ -7,6 +7,7 @@ import {
   acceptPicture,
   deletePicture,
   getRequestedPictures,
+  resetPictures,
   selectPicture,
 } from "../../../store/slices/pictureSlice";
 
@@ -21,7 +22,8 @@ const RequestedPictures = () => {
         take: pictureData.take,
       })
     );
-  }, [dispatch]);
+    return () => dispatch(resetPictures());
+  }, []);
 
   const acceptHandler = (id) => {
     if (!id) return;
@@ -122,7 +124,9 @@ const RequestedPictures = () => {
                       </div>
                     </div>
                     <div className="w-1/6">
-                      {!p.accepted && <p className="text-yellow-500">request</p>}
+                      {!p.accepted && (
+                        <p className="text-yellow-500">request</p>
+                      )}
                       {p.accepted && <p className="text-blue-500">accepted</p>}
                     </div>
                   </div>

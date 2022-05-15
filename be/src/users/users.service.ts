@@ -19,12 +19,13 @@ export class UsersService {
     return {
       records: await this.prisma.user.findMany({
         where: { username: { contains: searchStr } },
+        orderBy: { role: 'asc' },
         select: {
           email: true,
           username: true,
           id: true,
           role: true,
-          _count: { select: { prictures: true } },
+          _count: { select: { pictures: true } },
         },
         skip,
         take,

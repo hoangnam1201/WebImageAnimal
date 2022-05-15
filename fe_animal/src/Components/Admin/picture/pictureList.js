@@ -1,19 +1,14 @@
-import {
-  Alert,
-  Autocomplete,
-  LinearProgress,
-  Link,
-  TablePagination,
-  TextField,
-} from "@mui/material";
-import React, { useEffect } from "react";
+import { Autocomplete, TablePagination, TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { pictureSelector, tagSelector } from "../../../store/selectors";
 import {
   deletePicture,
   getPicutres,
+  resetPictures,
   updateInfoPicture,
 } from "../../../store/slices/pictureSlice";
 import { selectPicture } from "../../../store/slices/pictureSlice";
@@ -23,6 +18,7 @@ import FilterBox from "./filterBox";
 const PictureList = () => {
   const pictureData = useSelector(pictureSelector);
   const tagData = useSelector(tagSelector);
+  const location = useLocation();
   const dispatch = useDispatch();
 
   const {
@@ -43,15 +39,23 @@ const PictureList = () => {
   }, [pictureData, reset]);
 
   useEffect(() => {
-    console.log("get");
+    const filterValue = {
+      ...pictureData.filter,
+      authorId: location.state?.author?.id,
+    };
     dispatch(
       getPicutres({
-        filter: pictureData.filter,
+        filter: filterValue,
         page: pictureData.page,
         take: pictureData.take,
       })
     );
-  }, [dispatch]);
+    window.history.replaceState({}, document.title);
+    console.log(location.state);
+    return () => {
+      dispatch(resetPictures());
+    };
+  }, []);
 
   const onRowsPerPageChange = (e) => {
     dispatch(
@@ -121,6 +125,7 @@ const PictureList = () => {
         <div className="w-0 grow shadow p-4 min-w-min ">
           <div>
             <FilterBox
+              defaultValue={{ author: location.state?.author }}
               onChange={(value) => {
                 dispatch(
                   getPicutres({
@@ -303,4 +308,4 @@ const PictureList = () => {
   );
 };
 
-export default PictureList;
+export default React.memo(PictureList);

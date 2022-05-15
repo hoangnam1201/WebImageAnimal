@@ -1,7 +1,7 @@
-import { Alert, LinearProgress, Link } from "@mui/material";
+import { Alert, LinearProgress } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import Nav from "../Components/Admin/nav";
 import { pictureSelector } from "../store/selectors";
 
@@ -13,7 +13,7 @@ const LayoutPictureManagement = () => {
         <p className=" text-xl font-semibold">Picture Management</p>
         <Link
           className="py-2 px-10 text-bule shadow-md font-semibold rounded-sm block"
-          href="/admin/pictures/create"
+          to="/admin/pictures/create"
           underline="none"
         >
           New Picture
