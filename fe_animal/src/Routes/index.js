@@ -17,6 +17,7 @@ import HomePage from "../Components/HomePage";
 import MyPictureList from "../Components/MyPictureList";
 import Upload from "../Components/upload";
 import ChartReview from "../Components/Admin/reviews/chartReview";
+import DetailPicture from "../Components/DetailPics";
 
 export const mainRoute = (auth) => [
   { path: "home", element: <Navigate to="/" /> },
@@ -41,6 +42,7 @@ export const mainRoute = (auth) => [
           <Navigate to="/" />
         ),
       },
+      { path: "photos/id", element: <DetailPicture /> },
     ],
   },
 ];
@@ -96,8 +98,11 @@ export const adminRoute = (auth) => {
 
 export const galleryRoute = () => [
   {
-    path: "/photos",
+    path: "/tag",
     element: <LayoutGallery />,
-    children: [{ path: "", element: <GalleryImage /> }],
+    children: [
+      { path: "", element: <GalleryImage /> },
+      { path: ":id", element: <GalleryImage /> },
+    ],
   },
 ];

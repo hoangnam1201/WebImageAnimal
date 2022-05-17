@@ -1,44 +1,24 @@
 import { Button } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import Img1 from "../../Assets/food.jpg";
 import Img2 from "../../Assets/sports.jpg";
 import Img3 from "../../Assets/music.jpg";
 import Img4 from "../../Assets/coffee.jpg";
 import Img5 from "../../Assets/animal.jpg";
 import Img6 from "../../Assets/technology.jpg";
+import { useDispatch, useSelector } from "react-redux";
+import { tagSelector } from "../../store/selectors";
+import { getTag } from "../../store/slices/tagSlice";
+import { Link } from "react-router-dom";
+
 const ImageList = () => {
-  let data = [
-    {
-      id: 1,
-      imgSrc: Img1,
-      name: "Food",
-    },
-    {
-      id: 1,
-      imgSrc: Img2,
-      name: "Sports",
-    },
-    {
-      id: 1,
-      imgSrc: Img3,
-      name: "Music",
-    },
-    {
-      id: 1,
-      imgSrc: Img4,
-      name: "Coffee",
-    },
-    {
-      id: 1,
-      imgSrc: Img5,
-      name: "Animal",
-    },
-    {
-      id: 1,
-      imgSrc: Img6,
-      name: "Technology",
-    },
-  ];
+  const tagData = useSelector(tagSelector);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getTag());
+  }, []);
+
   return (
     <div className="p-12 text-gray-500">
       <div className="flex justify-between mx-16 items-center">
@@ -56,14 +36,16 @@ const ImageList = () => {
         </Button>
       </div>
       <div className="gap-4 columns-4 px-10 mt-7">
-        {data.map((item, index) => {
+        {tagData.list.map((item, index) => {
           return (
-            <div className="pt-3 relative" key={index}>
-              <img src={item.imgSrc} className="w-full" />
-              <h2 className="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl font-bold text-shadow-lg text-white">
-                {item.name}
-              </h2>
-            </div>
+            <Link key={index} to={`/tag/${item.id}`}>
+              <div className="pt-3 relative">
+                <img src={item.src} className="w-full" />
+                <h2 className="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl font-bold text-shadow-lg text-white">
+                  {item.name}
+                </h2>
+              </div>
+            </Link>
           );
         })}
       </div>

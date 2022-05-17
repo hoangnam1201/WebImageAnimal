@@ -1,5 +1,5 @@
 import { Button, TextField } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -12,8 +12,19 @@ import Image2 from "../../Assets/image2.jpg";
 import Image3 from "../../Assets/image3.jpg";
 import Image4 from "../../Assets/image4.jpg";
 import Image5 from "../../Assets/image5.jpg";
+import { useDispatch, useSelector } from "react-redux";
+import { tagSelector } from "../../store/selectors";
+import { getTag } from "../../store/slices/tagSlice";
+import { Link } from "react-router-dom";
 
 const CarouselTag = () => {
+  const tagData = useSelector(tagSelector);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getTag());
+  }, []);
+
   return (
     <div>
       <div className="flex justify-between items-center py-16 px-10">
@@ -42,92 +53,27 @@ const CarouselTag = () => {
       </div>
       <div className="px-4">
         <Swiper
-          className="h-14 bg-black"
+          className="h-14 bg-zinc-900"
           modules={[Navigation]}
           spaceBetween={-500}
           slidesPerView={6}
           navigation
         >
-          <SwiperSlide>
-            <div className="w-32 h-12 relative">
-              <img src={Image1} alt="image1" />
-              <h2 className="text-white font-bold absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xl text-shadow-lg">
-                Travel
-              </h2>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-32 h-12 relative">
-              <img src={Image2} alt="image2" />
-              <h2 className="text-white font-bold absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xl text-shadow-lg">
-                Sports
-              </h2>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-32 h-12 relative">
-              <img src={Image3} alt="image3" />
-              <h2 className="text-white font-bold absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xl text-shadow-lg">
-                Technology
-              </h2>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-32 h-12 relative">
-              <img src={Image4} alt="image4" />
-              <h2 className="text-white font-bold absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xl text-shadow-lg">
-                Animal
-              </h2>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-32 h-12 relative">
-              <img src={Image5} alt="image5" />
-              <h2 className="text-white font-bold absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xl text-shadow-lg">
-                Coffee
-              </h2>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-32 h-12 relative">
-              <img src={Image1} alt="image1" />
-              <h2 className="text-white font-bold absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xl text-shadow-lg">
-                Coffee
-              </h2>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-32 h-12 relative">
-              <img src={Image1} alt="image1" />
-              <h2 className="text-white font-bold absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xl text-shadow-lg">
-                Coffee
-              </h2>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-32 h-12 relative">
-              <img src={Image1} alt="image1" />
-              <h2 className="text-white font-bold absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xl text-shadow-lg">
-                Coffee
-              </h2>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-32 h-12 relative">
-              <img src={Image5} alt="image5" />
-              <h2 className="text-white font-bold absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xl text-shadow-lg">
-                Coffee
-              </h2>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-32 h-12 relative">
-              <img src={Image5} alt="image5" />
-              <h2 className="text-white font-bold absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xl text-shadow-lg">
-                Coffee
-              </h2>
-            </div>
-          </SwiperSlide>
+          {tagData &&
+            tagData.list.map((tag, index) => {
+              return (
+                <SwiperSlide key={index}>
+                  <Link to={`/tag/${tag.id}`}>
+                    <div className="w-32 h-12 relative">
+                      <img src={tag.src} alt="image1" />
+                      <h2 className="text-white font-bold absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xl text-shadow-lg">
+                        {tag.name}
+                      </h2>
+                    </div>
+                  </Link>
+                </SwiperSlide>
+              );
+            })}
         </Swiper>
       </div>
     </div>
