@@ -12,7 +12,6 @@ import {
 const MyPictureList = () => {
   const pictureData = useSelector(pictureSelector);
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(
       getMyPicutres({

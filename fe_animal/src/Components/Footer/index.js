@@ -6,7 +6,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 
 const Footer = () => {
   return (
-    <div className="flex flex-col text-white bg-gray-900">
+    <div className="flex flex-col text-white bg-black">
       <div className="py-5 border-b-2">
         <Link className="text-xl mx-3" to="/">
           Careers

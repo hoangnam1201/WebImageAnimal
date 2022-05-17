@@ -15,6 +15,7 @@ import RequestedPictures from "../Components/Admin/picture/requestedPictures";
 import UserList from "../Components/Admin/user/userList";
 import HomePage from "../Components/HomePage";
 import MyPictureList from "../Components/MyPictureList";
+import DetailPicture from "../Components/DetailPics";
 
 export const mainRoute = (auth) => [
   { path: "home", element: <Navigate to="/" /> },
@@ -27,6 +28,7 @@ export const mainRoute = (auth) => [
         path: "my-pictures",
         element: auth ? <MyPictureList /> : <Navigate to="/" />,
       },
+      { path: "photos/id", element: <DetailPicture /> },
     ],
   },
 ];
@@ -81,8 +83,11 @@ export const adminRoute = (auth) => {
 
 export const galleryRoute = () => [
   {
-    path: "/photos",
+    path: "/tag",
     element: <LayoutGallery />,
-    children: [{ path: "", element: <GalleryImage /> }],
+    children: [
+      { path: "", element: <GalleryImage /> },
+      { path: ":id", element: <GalleryImage /> },
+    ],
   },
 ];

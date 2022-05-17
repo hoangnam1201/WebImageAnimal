@@ -35,11 +35,63 @@ export const getMyPicutres = createAsyncThunk(
   "pictures/get",
   async ({ filter: { tagIds }, page, take }, { rejectWithValue, dispatch }) => {
     dispatch(savePageData({ page, take, filter: { tagIds } }));
-    const response = await pictureApi.getMyPictures(tagIds, page, take).catch((e) => {
-      if (e.response.status === 400)
-        throw rejectWithValue(e.response.data.message[0]);
-      throw rejectWithValue(e.response.data.message);
-    });
+    const response = await pictureApi
+      .getMyPictures(tagIds, page, take)
+      .catch((e) => {
+        if (e.response.status === 400)
+          throw rejectWithValue(e.response.data.message[0]);
+        throw rejectWithValue(e.response.data.message);
+      });
+    return response.data;
+  }
+);
+export const getMyPicutresHash = createAsyncThunk(
+  "pictures/get",
+  async ({ filter: { tagIds }, page, take }, { rejectWithValue, dispatch }) => {
+    const response = await pictureApi
+      .getMyPictures(tagIds, page, take)
+      .catch((e) => {
+        if (e.response.status === 400)
+          throw rejectWithValue(e.response.data.message[0]);
+        throw rejectWithValue(e.response.data.message);
+      });
+    if (response.data.records.length < take) {
+      dispatch(
+        savePageData({ page, take, filter: { tagIds }, hashMore: false })
+      );
+      return response.data;
+    }
+    dispatch(savePageData({ page, take, filter: { tagIds }, hashMore: true }));
+    return response.data;
+  }
+);
+export const getPicutresHash = createAsyncThunk(
+  "pictures/get",
+  async (
+    { filter: { tagIds, authorId }, page, take },
+    { rejectWithValue, dispatch }
+  ) => {
+    const response = await pictureApi
+      .get(tagIds, authorId, page, take)
+      .catch((e) => {
+        if (e.response.status === 400)
+          throw rejectWithValue(e.response.data.message[0]);
+        throw rejectWithValue(e.response.data.message);
+      });
+    if (response.data.records.length < take) {
+      dispatch(
+        savePageData({
+          page,
+          take,
+          filter: { tagIds, authorId },
+          hashMore: false,
+        })
+      );
+      return response.data;
+    }
+    dispatch(
+      savePageData({ page, take, filter: { tagIds, authorId }, hashMore: true })
+    );
     return response.data;
   }
 );
@@ -109,8 +161,8 @@ const initialState = {
   page: 0,
   take: 25,
   total: 0,
-  tagIds: [],
   list: [],
+  hashMore: true,
 };
 
 const pictureSlice = createSlice({
@@ -120,11 +172,14 @@ const pictureSlice = createSlice({
     selectPicture: (state, action) => {
       state.current = action.payload;
     },
-    savePageData: (state, action) => {
-      state.page = action.payload.page;
-      state.take = action.payload.take;
-      state.tagIds = action.payload.tagIds;
-      state.filter = action.payload.filter;
+    savePageData: (
+      state,
+      { payload: { page, take, filter, hashMore = true } }
+    ) => {
+      state.page = page;
+      state.take = take;
+      state.filter = filter;
+      state.hashMore = hashMore;
     },
     resetPictures: (state) => {
       state.loading = "idle";

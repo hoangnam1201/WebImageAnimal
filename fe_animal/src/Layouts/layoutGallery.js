@@ -5,7 +5,7 @@ import Header from "../Components/Header";
 
 const LayoutGallery = () => {
   return (
-    <div className="bg-black">
+    <div className="min-h-screen bg-zinc-900">
       <Header />
       <CarouselTag />
       <Outlet />
