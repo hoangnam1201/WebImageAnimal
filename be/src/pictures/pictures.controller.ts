@@ -32,7 +32,8 @@ export class PicturesController {
     private fileService: FileService,
   ) {}
 
-  @Get(':id')
+  @Get('by-id/:id')
+  @ApiParam({ name: 'id' })
   @ApiTags('pictures')
   async getById(@Param() params) {
     return await this.pictureService.getById(params['id']);
