@@ -83,9 +83,9 @@ const TagCreate = () => {
           Create success
         </Alert>
       )}
-      <div className="flex gap-8">
+      <div className="flex gap-8 min-w-min">
         <div className="p-4 flex gap-3 flex-col shadow-md">
-          <div>
+          <div className="min-w-max">
             <div className=" text-gray-400 group">
               <p>Tag name*:</p>
             </div>
@@ -140,9 +140,9 @@ const TagCreate = () => {
           </div>
         </div>
         {objectURL && (
-          <div className="shadow-md p-2">
+          <div className="shadow-md p-2 xl:w-1/3 lg:w-1/2">
             <p className=" text-gray-400">Tag image:</p>
-            <img id="target" src={objectURL} alt="tag" />
+            <img id="target" src={objectURL} alt="tag" className="w-full" />
           </div>
         )}
       </div>

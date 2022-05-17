@@ -29,7 +29,7 @@ const Header = () => {
               <Link to="/">Business Ideas</Link>
             </li>
             <li className="mx-3 hover:text-zinc-400">
-              <Link to="/">Upload</Link>
+              <Link to="/upload">Upload</Link>
             </li>
           </ul>
           {cookies.infoUser ? (

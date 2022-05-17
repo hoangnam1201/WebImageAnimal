@@ -32,6 +32,12 @@ export class PicturesController {
     private fileService: FileService,
   ) {}
 
+  @Get(':id')
+  @ApiTags('pictures')
+  async getById(@Param() params) {
+    return await this.pictureService.getById(params['id']);
+  }
+
   @Post('get')
   @ApiTags('pictures')
   async get(@Body() dto: PictureGetDto) {
@@ -54,7 +60,7 @@ export class PicturesController {
       user['id'],
       dto.page * dto.take,
       dto.take,
-      dto.accepted,
+      undefined,
     );
   }
 

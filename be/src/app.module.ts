@@ -11,6 +11,7 @@ import { DecoratorsModule } from './decorators/decorators.module';
 import { FirebaseModule } from 'nestjs-firebase';
 // import {} from '../animaldb-admin-firebase.json'
 import { FileModule } from './file/file.module';
+import { ReviewsModule } from './reviews/reviews.module';
 @Module({
   imports: [
     PrismaModule,
@@ -24,6 +25,7 @@ import { FileModule } from './file/file.module';
     TagsModule,
     DecoratorsModule,
     FileModule,
+    ReviewsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

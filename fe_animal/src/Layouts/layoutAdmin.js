@@ -7,6 +7,7 @@ const linkList = [
   { label: "Tags", href: "/admin/tags" },
   { label: "Pictures", href: "/admin/pictures" },
   { label: "Users", href: "/admin/users" },
+  { label: "Reviews", href: "/admin/reviews" },
 ];
 
 const LayoutAdmin = () => {

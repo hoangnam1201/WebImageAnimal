@@ -15,6 +15,8 @@ import RequestedPictures from "../Components/Admin/picture/requestedPictures";
 import UserList from "../Components/Admin/user/userList";
 import HomePage from "../Components/HomePage";
 import MyPictureList from "../Components/MyPictureList";
+import Upload from "../Components/upload";
+import ChartReview from "../Components/Admin/reviews/chartReview";
 
 export const mainRoute = (auth) => [
   { path: "home", element: <Navigate to="/" /> },
@@ -26,6 +28,18 @@ export const mainRoute = (auth) => [
       {
         path: "my-pictures",
         element: auth ? <MyPictureList /> : <Navigate to="/" />,
+      },
+      {
+        path: "upload",
+        element: auth ? (
+          auth.user.role === "ADMIN" ? (
+            <Navigate to="/admin/pictures/create" />
+          ) : (
+            <Upload />
+          )
+        ) : (
+          <Navigate to="/" />
+        ),
       },
     ],
   },
@@ -74,6 +88,7 @@ export const adminRoute = (auth) => {
           ],
         },
         { path: "users", element: <UserList /> },
+        { path: "reviews", element: <ChartReview /> },
       ],
     },
   ];

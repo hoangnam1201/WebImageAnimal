@@ -1,17 +1,21 @@
-import { TablePagination } from "@mui/material";
+import { Autocomplete, TablePagination, TextField } from "@mui/material";
+import LinkMUI from "@mui/material/Link";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { pictureSelector } from "../../store/selectors";
+import { pictureSelector, tagSelector } from "../../store/selectors";
 import {
   getMyPicutres,
+  getPicutres,
   resetPictures,
   selectPicture,
 } from "../../store/slices/pictureSlice";
+import { getTag } from "../../store/slices/tagSlice";
 
 const MyPictureList = () => {
   const pictureData = useSelector(pictureSelector);
   const dispatch = useDispatch();
+  const tagData = useSelector(tagSelector);
 
   useEffect(() => {
     dispatch(
@@ -68,12 +72,47 @@ const MyPictureList = () => {
     <div className="p-4">
       <div className="md:flex md:gap-4 mt-5">
         <div className="w-0 grow shadow p-4 min-w-min ">
+          <div className=" max-w-xs shadow p-2">
+            <p className=" font-medium">Filter</p>
+            <Autocomplete
+              multiple
+              onChange={(e, value) => {
+                dispatch(
+                  getPicutres({
+                    filter: {
+                      tagIds: value.map(({ id }) => id),
+                    },
+                    page: pictureData.page,
+                    take: pictureData.take,
+                  })
+                );
+              }}
+              onOpen={() => {
+                dispatch(getTag());
+              }}
+              loading={tagData.loading === "loading"}
+              options={tagData.list}
+              getOptionLabel={(o) => o.name}
+              isOptionEqualToValue={(option, value) =>
+                option.name === value.name
+              }
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="standard"
+                  className="shadow"
+                  label="Tags"
+                />
+              )}
+            />
+          </div>
           <div className="flex w-full mt-4 flex-col">
             <div className="w-full font-semibold border-b-2 flex gap-4 p-3">
-              <p className="w-1/6">image</p>
-              <p className="w-1/3">title</p>
-              <p className="w-1/6">created at</p>
-              <p className="w-1/3">tag</p>
+              <p className="w-1/5">image</p>
+              <p className="w-1/5">title</p>
+              <p className="w-1/5">created at</p>
+              <p className="w-1/5">tag</p>
+              <p className="w-1/5">status</p>
             </div>
             {pictureData &&
               pictureData.list.map((p, index) => {
@@ -88,7 +127,7 @@ const MyPictureList = () => {
                     }}
                     key={index}
                   >
-                    <div className="w-1/6">
+                    <div className="w-1/5">
                       <img
                         src={p.src}
                         alt="cute cat"
@@ -96,13 +135,13 @@ const MyPictureList = () => {
                         loading="lazy"
                       />
                     </div>
-                    <div className="w-1/3 text-gray-400">
+                    <div className="w-1/5 text-gray-400">
                       <p>{p.title}</p>
                     </div>
-                    <div className="text-gray-500 font-light w-1/6">
+                    <div className="text-gray-500 font-light w-1/5">
                       <p>{new Date(p.createdAt).toLocaleDateString()}</p>
                     </div>
-                    <div className="w-1/3">
+                    <div className="w-1/5">
                       <div className="flex items-center gap-2 flex-wrap">
                         {p.tags.map((t, _index) => (
                           <div
@@ -113,6 +152,12 @@ const MyPictureList = () => {
                           </div>
                         ))}
                       </div>
+                    </div>
+                    <div className="w-1/5">
+                      {!p.accepted && (
+                        <p className="text-yellow-500">request</p>
+                      )}
+                      {p.accepted && <p className="text-blue-500">accepted</p>}
                     </div>
                   </div>
                 );
@@ -131,12 +176,10 @@ const MyPictureList = () => {
           </div>
         </div>
         <div
-          className={`${
-            pictureData.current ? "w-1/3" : "w-0"
-          }  transition-all overflow-hidden`}
+          className={`${pictureData.current ? "w-1/3" : "w-0"}  transition-all`}
         >
           {pictureData.current && (
-            <div className="shadow">
+            <div className="shadow-md overflow-hidden">
               <div className="p-4 flex gap-3 flex-col">
                 <img
                   src={pictureData.current.src}
@@ -144,18 +187,33 @@ const MyPictureList = () => {
                   key={pictureData.current.id}
                 />
                 <div className="flex gap-4">
-                  <p className="text-gray-400 font-thin">Poster: </p>
-                  <p className=" tracking-wide">
-                    {pictureData.current.author?.username}
-                  </p>
+                  <p className="text-gray-400 font-thin">src: </p>
+                  <LinkMUI
+                    className=" tracking-wide break-all"
+                    href={pictureData.current.src}
+                    target="_blank"
+                  >
+                    {pictureData.current.src}
+                  </LinkMUI>
                 </div>
                 <div className="flex gap-4">
                   <p className="text-gray-400 font-thin">Title: </p>
-                  <div className="w-0 grow"></div>
+                  <div className="w-0 grow h-20 shadow-md p-2 text-gray-500 font-light">
+                    {pictureData.current.title}
+                  </div>
                 </div>
                 <div className="flex gap-4">
                   <p className="text-gray-400 font-thin">tags: </p>
-                  <div className="w-0 grow"></div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {pictureData.current.tags.map((t, _index) => (
+                      <div
+                        key={_index}
+                        className="py-1 px-3 bg-gray-200 rounded-md"
+                      >
+                        {t.name}
+                      </div>
+                    ))}
+                  </div>
                 </div>
                 <div className="flex justify-around mt-3">
                   <button
