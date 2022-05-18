@@ -1,11 +1,5 @@
 import { Button } from "@mui/material";
 import React, { useEffect } from "react";
-import Img1 from "../../Assets/food.jpg";
-import Img2 from "../../Assets/sports.jpg";
-import Img3 from "../../Assets/music.jpg";
-import Img4 from "../../Assets/coffee.jpg";
-import Img5 from "../../Assets/animal.jpg";
-import Img6 from "../../Assets/technology.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { tagSelector } from "../../store/selectors";
 import { getTag } from "../../store/slices/tagSlice";

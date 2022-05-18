@@ -33,4 +33,7 @@ export const pictureApi = {
   dowload: async (filename) => {
     return await instance.get("/file/dowload/" + filename);
   },
+  getPictureById: async (id) => {
+    return await instance.get("/pictures/by-id/" + id);
+  },
 };

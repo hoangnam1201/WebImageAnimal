@@ -3,13 +3,20 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../Assets/logo.png";
 import { useCookies } from "react-cookie";
-
+import Swal from "sweetalert2";
 const Header = () => {
   const [cookies, _, removeCookies] = useCookies(["infoUser"]);
   const navigate = useNavigate();
 
   const logoutHandler = () => {
     removeCookies("infoUser", { path: "/" });
+    Swal.fire({
+      icon: "success",
+      title: "Logout Successful !!!",
+      text: "Thank your for using !!!",
+      showConfirmButton: false,
+      timer: 1500,
+    });
     navigate("/");
   };
 

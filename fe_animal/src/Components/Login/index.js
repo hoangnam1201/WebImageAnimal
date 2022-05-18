@@ -5,6 +5,7 @@ import Logo from "../../Assets/logo.png";
 import GoogleIcon from "@mui/icons-material/Google";
 import { useCookies } from "react-cookie";
 import { login, userApi } from "../../api/userApi";
+import Swal from "sweetalert2";
 
 const LoginPage = () => {
   const [cookies, setCookies] = useCookies(["infoUser"]);
@@ -24,8 +25,15 @@ const LoginPage = () => {
       const res = await userApi.login(loginData);
       setCookies("infoUser", JSON.stringify(res?.data), { path: "/" });
       setLoginState({ status: 0 });
-      navigate("/", {
-        state: { msg: "Login success", status: 0 },
+      Swal.fire({
+        icon: "success",
+        title: "Login successful !!!",
+        showConfirmButton: false,
+        timer: 1000,
+      }).then(() => {
+        navigate("/", {
+          state: { msg: "Login success", status: 0 },
+        });
       });
     } catch (e) {
       if (e.response) {
@@ -36,34 +44,46 @@ const LoginPage = () => {
       }
     }
   };
+
+  const handleLoginKey = (e) => {
+    if (e.key === "Enter") {
+      loginHandler();
+    }
+  };
   return (
     <div className="top-0 absolute w-full flex justify-center items-center py-40 bg-bg-login text-white bg-cover bg-center">
       <div className="flex flex-col justify-center items-center w-1/3 border-2 rounded-xl bg-slate-600 bg-opacity-50">
         <img width={200} height={200} src={Logo} alt="logo" className="py-3" />
         <h2 className="text-3xl font-bold py-4">Contributor Login</h2>
-        <TextField
-          label="Email"
-          name="email"
-          type="email"
-          onChange={(e) =>
-            setLoginData({ ...loginData, email: e.target.value })
-          }
-          className="w-5/6 bg-white"
-        />
-        <TextField
-          label="Password"
-          type="password"
-          name="passowrd"
-          onChange={(e) =>
-            setLoginData({ ...loginData, password: e.target.value })
-          }
-          className="w-5/6 mt-3 bg-white"
-        />
+        <form
+          onKeyDown={handleLoginKey}
+          className="flex flex-col w-5/6 justify-center items-center"
+        >
+          <TextField
+            label="Email"
+            name="email"
+            type="email"
+            onChange={(e) =>
+              setLoginData({ ...loginData, email: e.target.value })
+            }
+            className="w-5/6 bg-white"
+          />
+          <TextField
+            label="Password"
+            type="password"
+            name="passowrd"
+            onChange={(e) =>
+              setLoginData({ ...loginData, password: e.target.value })
+            }
+            className="w-5/6 mt-3 bg-white"
+          />
+        </form>
         <div className="text-center text-red-400 font-semibold">
           {loginState.status === -1 && loginState.err}
         </div>
         <Button
           onClick={loginHandler}
+          onKeyDown={handleLoginKey}
           variant="contained"
           color="primary"
           className="w-1/2 mt-3"

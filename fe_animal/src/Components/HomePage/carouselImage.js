@@ -54,25 +54,12 @@ const CarouselImage = () => {
             picData.list.slice(0, 10).map((pic, index) => {
               return (
                 <SwiperSlide key={index} className="h-full">
-                  <img src={pic.src} alt="image1" className="h-full" />
+                  <Link to={`/photos/${pic.id}`}>
+                    <img src={pic.src} alt="image1" className="h-full" />
+                  </Link>
                 </SwiperSlide>
               );
             })}
-          {/* <SwiperSlide className="h-full">
-            <img src={Image1} alt="image1"  className="h-full"/>
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src={Image2} alt="image2" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src={Image3} alt="image3" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src={Image4} alt="image4" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src={Image5} alt="image5" />
-          </SwiperSlide> */}
         </Swiper>
       </div>
       {/* <div className="flex justify-between items-center px-20 py-20 border-b-2 border-gray-400">

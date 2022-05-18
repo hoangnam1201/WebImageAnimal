@@ -42,7 +42,7 @@ export const mainRoute = (auth) => [
           <Navigate to="/" />
         ),
       },
-      { path: "photos/id", element: <DetailPicture /> },
+      { path: "/photos/:id", element: <DetailPicture /> },
     ],
   },
 ];
