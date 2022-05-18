@@ -34,7 +34,6 @@ const TagCreate = () => {
   };
 
   useEffect(() => {
-    console.log("aaa");
     if (tagData?.createLoading === "success") {
       reset({ name: "" });
       inputFileRef.current.value = null;

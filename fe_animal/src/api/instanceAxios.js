@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Cookies } from "react-cookie";
 
-const baseURL = process.env.baseURL || "http://localhost:3001/";
+export const baseURL = process.env.baseURL || "http://localhost:3001/";
 
 const instance = axios.create({ baseURL });
 

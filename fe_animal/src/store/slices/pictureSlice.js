@@ -15,11 +15,7 @@ export const createPicture = createAsyncThunk(
 
 export const getPicutres = createAsyncThunk(
   "pictures/get",
-  async (
-    { filter: { tagIds, authorId }, page, take },
-    { rejectWithValue, dispatch }
-  ) => {
-    dispatch(savePageData({ page, take, filter: { tagIds, authorId } }));
+  async ({ filter: { tagIds, authorId }, page, take }, { rejectWithValue }) => {
     const response = await pictureApi
       .get(tagIds, authorId, page, take)
       .catch((e) => {
@@ -27,14 +23,13 @@ export const getPicutres = createAsyncThunk(
           throw rejectWithValue(e.response.data.message[0]);
         throw rejectWithValue(e.response.data.message);
       });
-    return response.data;
+    return { page, take, filter: { tagIds, authorId }, ...response.data };
   }
 );
 
 export const getMyPicutres = createAsyncThunk(
   "pictures/get",
-  async ({ filter: { tagIds }, page, take }, { rejectWithValue, dispatch }) => {
-    dispatch(savePageData({ page, take, filter: { tagIds } }));
+  async ({ filter: { tagIds }, page, take }, { rejectWithValue }) => {
     const response = await pictureApi
       .getMyPictures(tagIds, page, take)
       .catch((e) => {
@@ -42,35 +37,13 @@ export const getMyPicutres = createAsyncThunk(
           throw rejectWithValue(e.response.data.message[0]);
         throw rejectWithValue(e.response.data.message);
       });
-    return response.data;
+    return { page, take, filter: { tagIds }, ...response.data };
   }
 );
-export const getMyPicutresHash = createAsyncThunk(
-  "pictures/get",
-  async ({ filter: { tagIds }, page, take }, { rejectWithValue, dispatch }) => {
-    const response = await pictureApi
-      .getMyPictures(tagIds, page, take)
-      .catch((e) => {
-        if (e.response.status === 400)
-          throw rejectWithValue(e.response.data.message[0]);
-        throw rejectWithValue(e.response.data.message);
-      });
-    if (response.data.records.length < take) {
-      dispatch(
-        savePageData({ page, take, filter: { tagIds }, hashMore: false })
-      );
-      return response.data;
-    }
-    dispatch(savePageData({ page, take, filter: { tagIds }, hashMore: true }));
-    return response.data;
-  }
-);
+
 export const getPicutresHash = createAsyncThunk(
   "pictures/get",
-  async (
-    { filter: { tagIds, authorId }, page, take },
-    { rejectWithValue, dispatch }
-  ) => {
+  async ({ filter: { tagIds, authorId }, page, take }, { rejectWithValue }) => {
     const response = await pictureApi
       .get(tagIds, authorId, page, take)
       .catch((e) => {
@@ -78,34 +51,13 @@ export const getPicutresHash = createAsyncThunk(
           throw rejectWithValue(e.response.data.message[0]);
         throw rejectWithValue(e.response.data.message);
       });
-    if (response.data.records.length < take) {
-      dispatch(
-        savePageData({
-          page,
-          take,
-          filter: { tagIds, authorId },
-          hashMore: false,
-        })
-      );
-      return response.data;
-    }
-    dispatch(
-      savePageData({ page, take, filter: { tagIds, authorId }, hashMore: true })
-    );
-    return response.data;
+    return { ...response.data, page, take, filter: { tagIds } };
   }
 );
 
 export const getRequestedPictures = createAsyncThunk(
   "pictures/getRequesteds",
   async ({ page, take }, { rejectWithValue, dispatch }) => {
-    dispatch(
-      savePageData({
-        page,
-        take,
-        filter: { authorId: undefined, tagIds: [] },
-      })
-    );
     const response = await pictureApi
       .get([], undefined, page, take, false)
       .catch((e) => {
@@ -113,7 +65,12 @@ export const getRequestedPictures = createAsyncThunk(
           throw rejectWithValue(e.response.data.message[0]);
         throw rejectWithValue(e.response.data.message);
       });
-    return response.data;
+    return {
+      ...response.data,
+      page,
+      take,
+      filter: { tagIds: [], authorId: undefined },
+    };
   }
 );
 
@@ -172,15 +129,6 @@ const pictureSlice = createSlice({
     selectPicture: (state, action) => {
       state.current = action.payload;
     },
-    savePageData: (
-      state,
-      { payload: { page, take, filter, hashMore = true } }
-    ) => {
-      state.page = page;
-      state.take = take;
-      state.filter = filter;
-      state.hashMore = hashMore;
-    },
     resetPictures: (state) => {
       state.loading = "idle";
       state.current = null;
@@ -202,9 +150,13 @@ const pictureSlice = createSlice({
       state.error = action.payload;
     },
     [getMyPicutres.fulfilled]: (state, action) => {
+      const { count, records, filter, page, take } = action.payload;
       state.loading = "idle";
-      state.list = action.payload.records;
-      state.total = action.payload.count;
+      state.total = count;
+      state.take = take;
+      state.page = page + 1;
+      state.filter = filter;
+      state.list = records;
     },
     [getMyPicutres.pending]: (state) => {
       state.loading = "loading";
@@ -214,9 +166,18 @@ const pictureSlice = createSlice({
       state.error = action.payload;
     },
     [getPicutres.fulfilled]: (state, action) => {
+      const { count, records, filter, page, take } = action.payload;
       state.loading = "idle";
-      state.list = action.payload.records;
-      state.total = action.payload.count;
+      state.total = count;
+      state.take = take;
+      state.page = page + 1;
+      state.filter = filter;
+      state.hashMore = records.length < take ? false : true;
+      if (page > 0) {
+        state.list.push(...records);
+      } else {
+        state.list = records;
+      }
     },
     [getRequestedPictures.pending]: (state) => {
       state.loading = "loading";
@@ -226,9 +187,13 @@ const pictureSlice = createSlice({
       state.error = action.payload;
     },
     [getRequestedPictures.fulfilled]: (state, action) => {
+      const { count, records, filter, page, take } = action.payload;
       state.loading = "idle";
-      state.list = action.payload.records;
-      state.total = action.payload.count;
+      state.total = count;
+      state.take = take;
+      state.page = page + 1;
+      state.filter = filter;
+      state.list = records;
     },
     [createPicture.pending]: (state) => {
       state.loading = "loading";
@@ -282,7 +247,6 @@ const pictureSlice = createSlice({
   },
 });
 
-export const { selectPicture, savePageData, resetPictures } =
-  pictureSlice.actions;
+export const { selectPicture, resetPictures } = pictureSlice.actions;
 
 export default pictureSlice.reducer;

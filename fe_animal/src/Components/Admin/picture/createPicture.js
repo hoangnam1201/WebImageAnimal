@@ -45,7 +45,6 @@ const CreatePicture = () => {
   };
 
   const onCreate = (data) => {
-    console.log(data);
     const fd = new FormData();
     fd.append("file", data.file);
     fd.append("title", data.title);

@@ -29,7 +29,6 @@ const TagList = () => {
   } = useForm({ mode: "onChange" });
 
   const fileChangeHandler = (e) => {
-    console.log(e.target.files);
     if (e.target.files && e.target.files[0] && tagData.current) {
       const fb = new FormData();
       fb.append("file", e.target.files[0]);

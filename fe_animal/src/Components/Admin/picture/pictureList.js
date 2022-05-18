@@ -51,7 +51,6 @@ const PictureList = () => {
       })
     );
     window.history.replaceState({}, document.title);
-    console.log(location.state);
     return () => {
       dispatch(resetPictures());
     };
@@ -78,7 +77,6 @@ const PictureList = () => {
   };
 
   const updateHandler = (data) => {
-    console.log(data);
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",

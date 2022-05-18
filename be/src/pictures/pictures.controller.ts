@@ -36,7 +36,9 @@ export class PicturesController {
   @ApiParam({ name: 'id' })
   @ApiTags('pictures')
   async getById(@Param() params) {
-    return await this.pictureService.getById(params['id']);
+    return await this.pictureService.getById(params['id']).catch(() => {
+      throw new InternalServerErrorException();
+    });
   }
 
   @Post('get')

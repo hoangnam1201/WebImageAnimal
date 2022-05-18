@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../Assets/logo.png";
 import { useCookies } from "react-cookie";
@@ -37,7 +37,7 @@ const Header = () => {
               <h2 className="font-bold text-xl text-white">
                 Hi, {cookies.infoUser.user.username}
               </h2>
-              <div className="bg-gray-200 rounded-full group hover:bg-white relative">
+              <div className="bg-gray-200 rounded-full group hover:bg-white relative p-1">
                 <div>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -55,8 +55,8 @@ const Header = () => {
                     />
                   </svg>
                 </div>
-                <div className="absolute top-full right-0 whitespace-nowrap p-1 hidden group-hover:block">
-                  <div className="bg-gray-200 text-gray-600 p-3 rounded shadow flex flex-col">
+                <div className="absolute top-full right-0 whitespace-nowrap pt-2 hidden group-hover:block">
+                  <div className="bg-gray-50 text-gray-600 p-3 rounded shadow flex flex-col">
                     {cookies.infoUser.user.role === "USER" ? (
                       <Link to="/my-pictures">
                         <button className="p-2 text-center hover:shadow-lg shadow rounded">

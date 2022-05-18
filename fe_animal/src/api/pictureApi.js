@@ -30,4 +30,7 @@ export const pictureApi = {
   updateInfo: async (id, data) => {
     return await instance.put("/pictures/" + id, data);
   },
+  dowload: async (filename) => {
+    return await instance.get("/file/dowload/" + filename);
+  },
 };

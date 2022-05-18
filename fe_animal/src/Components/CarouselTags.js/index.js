@@ -1,4 +1,4 @@
-import { Button, TextField } from "@mui/material";
+import { Autocomplete, Button, IconButton, TextField } from "@mui/material";
 import React, { useEffect } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { Navigation } from "swiper";
@@ -7,19 +7,15 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import Image1 from "../../Assets/image1.jpg";
-import Image2 from "../../Assets/image2.jpg";
-import Image3 from "../../Assets/image3.jpg";
-import Image4 from "../../Assets/image4.jpg";
-import Image5 from "../../Assets/image5.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { tagSelector } from "../../store/selectors";
 import { getTag } from "../../store/slices/tagSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const CarouselTag = () => {
   const tagData = useSelector(tagSelector);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getTag());
@@ -35,20 +31,32 @@ const CarouselTag = () => {
             domain images are free to use for personal or commercial purposes.
           </h3>
         </div>
-        <div>
-          <TextField
-            label="Search photos"
-            variant="outlined"
-            className="bg-white text-gray-500"
-          />
-          <Button
-            startIcon={<SearchIcon />}
-            variant="contained"
-            color="success"
-            className="h-14 w-28"
-          >
-            Search
-          </Button>
+        <div className="flex items-center bg-white rounded overflow-hidden min-w-max">
+          <div className="h-full">
+            <Autocomplete
+              id="searchInput"
+              onChange={(e, value) => {
+                navigate("/tag/" + value.id);
+              }}
+              options={tagData.list}
+              getOptionLabel={(o) => o.name}
+              isOptionEqualToValue={(option, value) =>
+                option.name === value.name
+              }
+              renderInput={(params) => (
+                <div ref={params.InputProps.ref}>
+                  <input
+                    type="text"
+                    {...params.inputProps}
+                    className="outline-none p-4"
+                  />
+                </div>
+              )}
+            />
+          </div>
+          <label className="p-4" htmlFor="searchInput">
+            <SearchIcon />
+          </label>
         </div>
       </div>
       <div className="px-4">

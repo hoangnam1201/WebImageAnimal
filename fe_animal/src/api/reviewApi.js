@@ -7,4 +7,7 @@ export const reviewApi = {
   getGroupByMood: () => {
     return instance.get("reviews/get-group-by-mood");
   },
+  create: (moodImprovement) => {
+    return instance.post("reviews", { moodImprovement });
+  },
 };

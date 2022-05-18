@@ -1,13 +1,4 @@
-import {
-  BadRequestException,
-  Controller,
-  Get,
-  InternalServerErrorException,
-  NotFoundException,
-  Param,
-  Res,
-  StreamableFile,
-} from '@nestjs/common';
+import { Controller, Get, Param, Res } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { FileService } from './file.service';

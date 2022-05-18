@@ -7,7 +7,7 @@ const LayoutDefault = () => {
   return (
     <div className="flex flex-col min-h-screen bg-zinc-900">
       <Header />
-      <div className="grow min-h-screen">
+      <div className="grow">
         <Outlet />
       </div>
       <Footer />

@@ -5,13 +5,9 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class ReviewsService {
   constructor(private prisma: PrismaService) {}
 
-  checkAlreadyReview(userId) {
-    return this.prisma.review.findFirst({ where: { userId: userId } });
-  }
-
-  create(userId: string, moodImprovement: number) {
+  create(moodImprovement: number) {
     return this.prisma.review.create({
-      data: { moodImprovement, user: { connect: { id: userId } } },
+      data: { moodImprovement },
     });
   }
 

@@ -11,7 +11,6 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { JwtGaurd } from 'src/auth/gaurds/jwt.gaurd';
 import { CreateReviewDto } from './dto/create-review.dto';
-import { GetReviewsDto } from './dto/get-reviews.dto';
 import { ReviewsService } from './reviews.service';
 
 @Controller('reviews')
@@ -37,9 +36,7 @@ export class ReviewsController {
   @Post()
   @ApiTags('reviews')
   @ApiBearerAuth()
-  @UseGuards(JwtGaurd)
   async create(@Body() dto: CreateReviewDto, @Req() req: Request) {
-    const user = req.user;
-    return await this.reviewService.create(user['id'], dto.moodImprovement);
+    return await this.reviewService.create(dto.moodImprovement);
   }
 }

@@ -14,7 +14,6 @@ import { Link } from "react-router-dom";
 const CarouselImage = () => {
   const picData = useSelector(pictureSelector);
   const dispatch = useDispatch();
-  console.log(picData);
   useEffect(() => {
     dispatch(
       getPicutres({
@@ -25,7 +24,7 @@ const CarouselImage = () => {
     );
     window.history.replaceState({}, document.title);
     return () => {
-      dispatch(resetPictures());
+      // dispatch(resetPictures());
     };
   }, []);
   return (

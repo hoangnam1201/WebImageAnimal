@@ -1,4 +1,9 @@
-import { Autocomplete, TablePagination, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  LinearProgress,
+  TablePagination,
+  TextField,
+} from "@mui/material";
 import LinkMUI from "@mui/material/Link";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,7 +74,14 @@ const MyPictureList = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 bg-gray-100 min-h-screen">
+      <div
+        className={`${
+          pictureData?.loading === "loading" ? "visible" : "invisible"
+        }`}
+      >
+        <LinearProgress />
+      </div>
       <div className="md:flex md:gap-4 mt-5">
         <div className="w-0 grow shadow p-4 min-w-min ">
           <div className=" max-w-xs shadow p-2">

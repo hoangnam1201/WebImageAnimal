@@ -24,7 +24,6 @@ const RegisterPage = () => {
         state: { msg: "registor success", status: 0 },
       });
     } catch (e) {
-      console.log(e);
       if (e.response) {
         setRegisterState({
           status: -1,

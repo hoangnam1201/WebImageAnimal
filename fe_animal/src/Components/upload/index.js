@@ -44,7 +44,6 @@ const Upload = () => {
   };
 
   const onCreate = (data) => {
-    console.log(data);
     const fd = new FormData();
     fd.append("file", data.file);
     fd.append("title", data.title);
@@ -56,7 +55,7 @@ const Upload = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 bg-gray-100 min-h-screen">
       <div className="text-xl font-semibold shadow p-4">
         <p>Upload Image</p>
       </div>
