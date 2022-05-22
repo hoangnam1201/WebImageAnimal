@@ -10,8 +10,8 @@ export const pictureApi = {
   accept: async (id) => {
     return await instance.put("/pictures/accept/" + id);
   },
-  get: async (tagIds = [], authorId, page, take, accepted = true) => {
-    return await instance.post("/pictures/get", {
+  get: (tagIds = [], authorId, page, take, accepted = true) => {
+    return instance.post("/pictures/get", {
       authorId,
       tagIds,
       page,
@@ -19,21 +19,24 @@ export const pictureApi = {
       accepted,
     });
   },
-  getMyPictures: async (tagIds = [], page, take, accepted = true) => {
-    return await instance.post("/pictures/get-my-pictures", {
+  getMyPictures: (tagIds = [], page, take, accepted = true) => {
+    return instance.post("/pictures/get-my-pictures", {
       tagIds,
       page,
       take,
       accepted,
     });
   },
-  updateInfo: async (id, data) => {
-    return await instance.put("/pictures/" + id, data);
+  updateInfo: (id, data) => {
+    return instance.put("/pictures/" + id, data);
   },
-  dowload: async (filename) => {
-    return await instance.get("/file/dowload/" + filename);
+  dowload: (filename) => {
+    return instance.get("/file/dowload/" + filename);
   },
-  getPictureById: async (id) => {
-    return await instance.get("/pictures/by-id/" + id);
+  getPictureById: (id) => {
+    return instance.get("/pictures/by-id/" + id);
+  },
+  find: async (searchStr, take = 5) => {
+    return instance.get("/pictures/find/", { params: { searchStr, take } });
   },
 };

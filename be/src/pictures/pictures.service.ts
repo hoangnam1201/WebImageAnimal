@@ -82,6 +82,14 @@ export class PicturesService {
     });
   }
 
+  async find(searchStr: string, take: number) {
+    return await this.prisma.picture.findMany({
+      where: { title: { contains: searchStr, mode: 'insensitive' } },
+      select: { id: true, title: true },
+      take: take,
+    });
+  }
+
   async get(skip: number, take: number) {
     return {
       records: await this.prisma.picture.findMany({

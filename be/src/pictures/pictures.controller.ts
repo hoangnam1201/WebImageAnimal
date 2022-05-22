@@ -21,6 +21,7 @@ import { JwtGaurd } from 'src/auth/gaurds/jwt.gaurd';
 import { FileService } from 'src/file/file.service';
 import { Readable } from 'stream';
 import { PictureCreateDto } from './dto/picture-create.dto';
+import { PictureFindDto } from './dto/picture-find.dto';
 import { PictureGetDto } from './dto/picture-get.dto';
 import { PictureUpdateDto } from './dto/picture-update.dto';
 import { PicturesService } from './pictures.service';
@@ -136,5 +137,11 @@ export class PicturesController {
   @ApiParam({ name: 'id' })
   async accept(@Param() Param) {
     return await this.pictureService.acceptPicture(Param.id);
+  }
+
+  @Get('find')
+  @ApiTags('pictures')
+  async find(@Query() dto: PictureFindDto) {
+    return await this.pictureService.find(dto.searchStr, dto.take);
   }
 }

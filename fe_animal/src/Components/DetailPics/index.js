@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { pictureApi } from "../../api/pictureApi";
 import { baseURL } from "../../api/instanceAxios";
+import { CircularProgress } from "@mui/material";
 
 const DetailPicture = () => {
   const params = useParams();
@@ -64,7 +65,10 @@ const DetailPicture = () => {
           </h2>
         </div>
         <div className="w-3/4 flex justify-center items-center">
-          <img className="w-3/4 h-3/4" src={picData.src} alt="img1" />
+          {picData.src && (
+            <img className="w-3/4 h-3/4" src={picData.src} alt="img1" />
+          )}
+          {!picData.src && <CircularProgress sx={{ color: "white" }} />}
         </div>
       </div>
     </div>

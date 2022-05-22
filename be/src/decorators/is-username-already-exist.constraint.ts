@@ -19,7 +19,7 @@ export class IsUsernameAlreadyExistConstraint
     validationArguments?: ValidationArguments,
   ): boolean | Promise<boolean> {
     return this.prisma.user
-      .findFirst({ where: { email: value } })
+      .findFirst({ where: { username: value } })
       .then((user) => {
         if (user) return false;
         return true;
@@ -27,7 +27,7 @@ export class IsUsernameAlreadyExistConstraint
   }
 
   defaultMessage?(validationArguments?: ValidationArguments): string {
-    return 'Email already exist';
+    return 'username already exist';
   }
 }
 

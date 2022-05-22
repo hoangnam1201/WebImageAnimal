@@ -42,7 +42,7 @@ export const getMyPicutres = createAsyncThunk(
 );
 
 export const getPicutresHash = createAsyncThunk(
-  "pictures/get",
+  "pictures/getInfinityScroll",
   async ({ filter: { tagIds, authorId }, page, take }, { rejectWithValue }) => {
     const response = await pictureApi
       .get(tagIds, authorId, page, take)
@@ -154,11 +154,29 @@ const pictureSlice = createSlice({
       state.loading = "idle";
       state.total = count;
       state.take = take;
-      state.page = page + 1;
+      state.page = page;
       state.filter = filter;
       state.list = records;
     },
-    [getMyPicutres.pending]: (state) => {
+    [getPicutresHash.pending]: (state) => {
+      state.loading = "loading";
+    },
+    [getPicutresHash.rejected]: (state, action) => {
+      state.loading = "error";
+      state.error = action.payload;
+    },
+    [getPicutresHash.fulfilled]: (state, action) => {
+      const { count, records, filter, page, take } = action.payload;
+      state.loading = "idle";
+      state.total = count;
+      state.take = take;
+      state.page = page + 1;
+      state.hashMore = records.count < take ? false : true;
+      state.filter = filter;
+      if (page === 0) state.list = records;
+      else state.list.push(...records);
+    },
+    [getPicutres.pending]: (state) => {
       state.loading = "loading";
     },
     [getPicutres.rejected]: (state, action) => {
@@ -170,14 +188,9 @@ const pictureSlice = createSlice({
       state.loading = "idle";
       state.total = count;
       state.take = take;
-      state.page = page + 1;
+      state.page = page;
       state.filter = filter;
-      state.hashMore = records.length < take ? false : true;
-      if (page > 0) {
-        state.list.push(...records);
-      } else {
-        state.list = records;
-      }
+      state.list = records;
     },
     [getRequestedPictures.pending]: (state) => {
       state.loading = "loading";
@@ -191,7 +204,7 @@ const pictureSlice = createSlice({
       state.loading = "idle";
       state.total = count;
       state.take = take;
-      state.page = page + 1;
+      state.page = page;
       state.filter = filter;
       state.list = records;
     },

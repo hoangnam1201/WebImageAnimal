@@ -1,8 +1,8 @@
 import { Autocomplete, TablePagination, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import { pictureSelector, tagSelector } from "../../../store/selectors";
 import {
@@ -188,15 +188,17 @@ const PictureList = () => {
                 );
               })}
             <div className="flex justify-center">
-              <TablePagination
-                component="div"
-                count={pictureData?.total}
-                page={pictureData?.page}
-                onPageChange={onPageChange}
-                rowsPerPageOptions={[5, 25, 50]}
-                rowsPerPage={pictureData?.take}
-                onRowsPerPageChange={onRowsPerPageChange}
-              />
+              {pictureData && (
+                <TablePagination
+                  component="div"
+                  count={pictureData?.total}
+                  page={pictureData?.page}
+                  onPageChange={onPageChange}
+                  rowsPerPageOptions={[5, 25, 50]}
+                  rowsPerPage={pictureData?.take}
+                  onRowsPerPageChange={onRowsPerPageChange}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -212,6 +214,7 @@ const PictureList = () => {
                   src={pictureData.current.src}
                   alt="error"
                   key={pictureData.current.id}
+                  loading="lazy"
                 />
                 <div className="flex gap-4">
                   <p className="text-gray-400 font-thin">Poster: </p>

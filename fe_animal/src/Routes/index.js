@@ -18,9 +18,11 @@ import MyPictureList from "../Components/MyPictureList";
 import Upload from "../Components/upload";
 import ChartReview from "../Components/Admin/reviews/chartReview";
 import DetailPicture from "../Components/DetailPics";
+import NotFound from "../Components/notFound";
 
 export const mainRoute = (auth) => [
   { path: "home", element: <Navigate to="/" /> },
+  { path: "not-found", element: <NotFound /> },
   {
     path: "/",
     element: <LayoutDefault />,
@@ -39,12 +41,14 @@ export const mainRoute = (auth) => [
             <Upload />
           )
         ) : (
-          <Navigate to="/" />
+          <Navigate to="/auth/login" />
         ),
       },
       { path: "/photos/:id", element: <DetailPicture /> },
+      { path: "*", element: <Navigate to="/not-found" /> },
     ],
   },
+  { path: "*", element: <Navigate to="/not-found" /> },
 ];
 
 export const authRoute = (auth) => [
@@ -54,6 +58,7 @@ export const authRoute = (auth) => [
     children: [
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
+      { path: "*", element: <Navigate to="/not-found" /> },
     ],
   },
 ];
@@ -72,6 +77,7 @@ export const adminRoute = (auth) => {
             { path: "", element: <Navigate to="list" /> },
             { path: "list", element: <TagList /> },
             { path: "create", element: <TagCreate /> },
+            { path: "*", element: <Navigate to="/not-found" /> },
           ],
         },
         {
@@ -84,13 +90,16 @@ export const adminRoute = (auth) => {
               children: [
                 { path: "", element: <PictureList /> },
                 { path: "requesteds", element: <RequestedPictures /> },
+                { path: "*", element: <Navigate to="/not-found" /> },
               ],
             },
             { path: "create", element: <CreatePicture /> },
+            { path: "*", element: <Navigate to="/not-found" /> },
           ],
         },
         { path: "users", element: <UserList /> },
         { path: "reviews", element: <ChartReview /> },
+        { path: "*", element: <Navigate to="/not-found" /> },
       ],
     },
   ];
@@ -102,7 +111,7 @@ export const galleryRoute = () => [
     element: <LayoutGallery />,
     children: [
       { path: "", element: <GalleryImage /> },
-      { path: ":id", element: <GalleryImage /> },
+      { path: "*", element: <Navigate to="/not-found" /> },
     ],
   },
 ];

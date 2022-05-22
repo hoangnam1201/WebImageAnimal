@@ -3,7 +3,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import { useDispatch, useSelector } from "react-redux";
 import { pictureSelector } from "../../store/selectors";
 import { getPicutresHash } from "../../store/slices/pictureSlice";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ReviewDialog from "../dialog/reviewDialog";
 import { baseURL } from "../../api/instanceAxios";
@@ -13,6 +13,7 @@ const GalleryImage = () => {
   const picData = useSelector(pictureSelector);
   const dispatch = useDispatch();
   const params = useParams();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const getPictureSroll = () => {
@@ -37,9 +38,9 @@ const GalleryImage = () => {
   useEffect(() => {
     dispatch(
       getPicutresHash({
-        filter: {
-          tagIds: params.id ? [params.id] : [],
-        },
+        filter: location.state
+          ? location.state
+          : { tagIds: [], authorId: undefined },
         page: 0,
         take: picData.take,
       })
@@ -48,8 +49,11 @@ const GalleryImage = () => {
 
   return (
     <>
-      <div className="gap-4 px-4 py-10">
+      <div className="gap-4 py-10 xl:px-12 px-6">
         <ReviewDialog />
+        <p className="text-white text-5xl mb-5 font-bold capitalize">
+          {location.state?.message ? location.state?.message : "All Photos"}
+        </p>
         <InfiniteScroll
           dataLength={picData.list.length}
           next={getPictureSroll}
@@ -60,43 +64,47 @@ const GalleryImage = () => {
             </p>
           }
         >
-          <div className=" columns-3 gap-4">
+          <div className=" columns-1 md:columns-2 xl:columns-3">
             {picData &&
               picData.list.map((pic, index) => {
                 return (
-                  <Link key={index} to={`/photos/${pic.id}`}>
-                    <div className="group mt-4 w-full">
-                      <div className="relative group ">
-                        <img
-                          className="w-full"
-                          src={pic.src}
-                          alt="img1"
-                          loading="lazy"
-                        />
-                        <div className=" absolute w-full bottom-0 left-0 p-2 transition-opacity z-10 opacity-0 group-hover:opacity-100">
-                          <div className=" absolute top-0 left-0 w-full h-full bg-slate-600 opacity-30 z-0"></div>
-                          <div className="flex justify-between items-center relative z-10">
-                            <div>
-                              <p className="text-white font-bold">
-                                {pic.author?.username}
-                              </p>
-                            </div>
-                            <div>
-                              <a
-                                className="text-xs bg-gray-200 p-3 rounded-full"
-                                variant="contained"
-                                href={getFile(pic)}
-                                rel="noreferrer"
-                                target="_blank"
-                              >
-                                <DownloadIcon />
-                              </a>
-                            </div>
+                  <div
+                    onClick={() => navigate("/photos/" + pic.id)}
+                    className="w-full"
+                    key={pic.id}
+                  >
+                    <div className="relative group overflow-hidden mb-4">
+                      <img
+                        className="w-full"
+                        src={pic.src}
+                        alt={pic.title}
+                        loading="lazy"
+                      />
+                      <div className=" absolute w-full bottom-0 left-0 p-2 transition-opacity z-10 opacity-0 group-hover:opacity-100">
+                        <div className=" absolute top-0 left-0 w-full h-full bg-slate-600 opacity-30 z-0"></div>
+                        <div className="flex justify-between items-center relative z-10">
+                          <div>
+                            <p className="text-white font-bold">
+                              {pic.author?.username}
+                            </p>
+                          </div>
+                          <div>
+                            <a
+                              className="text-xs bg-gray-200 p-3 rounded-full"
+                              href={getFile(pic)}
+                              rel="noreferrer"
+                              target="_blank"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                              }}
+                            >
+                              <DownloadIcon />
+                            </a>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </Link>
+                  </div>
                 );
               })}
           </div>

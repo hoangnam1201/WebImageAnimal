@@ -18,13 +18,13 @@ const CarouselImage = () => {
     dispatch(
       getPicutres({
         filter: picData.filter,
-        page: picData.page,
+        page: 0,
         take: picData.take,
       })
     );
     window.history.replaceState({}, document.title);
     return () => {
-      // dispatch(resetPictures());
+      dispatch(resetPictures());
     };
   }, []);
   return (
@@ -62,24 +62,6 @@ const CarouselImage = () => {
             })}
         </Swiper>
       </div>
-      {/* <div className="flex justify-between items-center px-20 py-20 border-b-2 border-gray-400">
-        <div>
-          <h2 className="font-bold text-xl">
-            Get first access to free photos and other Burst content.
-          </h2>
-          <h2 className="font-bold text-xl">Unsubscribe anytime.</h2>
-        </div>
-        <div>
-          <TextField
-            label="Your email address"
-            variant="outlined"
-            className="bg-white text-gray-500"
-          />
-          <Button variant="contained" color="success" className="h-14 w-28">
-            Submit
-          </Button>
-        </div>
-      </div> */}
     </div>
   );
 };

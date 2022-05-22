@@ -1,7 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { FirebaseAdmin, InjectFirebaseAdmin } from 'nestjs-firebase';
 import { Stream } from 'stream';
+import { FirebaseAdmin, InjectFirebaseAdmin } from 'nestjs-firebase';
+import * as admin from 'firebase-admin';
+import { ServiceAccount } from 'firebase-admin';
 
 @Injectable()
 export class FileService {
@@ -19,10 +21,22 @@ export class FileService {
   ];
 
   constructor(
-    @InjectFirebaseAdmin() private readonly firebase: FirebaseAdmin,
+    // @InjectFirebaseAdmin() private readonly firebase: FirebaseAdmin,
     private config: ConfigService,
   ) {
-    this.storage = this.firebase.storage.bucket(this.config.get('BUCKET_NAME'));
+    const adminConfig: ServiceAccount = {
+      projectId: config.get<string>('FIREBASE_PROJECT_ID'),
+      privateKey: config
+        .get<string>('FIREBASE_PRIVATE_KEY')
+        .replace(/\\n/g, '\n'),
+      clientEmail: config.get<string>('FIREBASE_CLIENT_EMAIL'),
+    };
+    // Initialize the firebase admin app
+    admin.initializeApp({
+      credential: admin.credential.cert(adminConfig),
+    });
+
+    this.storage = admin.storage().bucket(config.get('BUCKET_NAME'));
   }
 
   async uploadFile(
