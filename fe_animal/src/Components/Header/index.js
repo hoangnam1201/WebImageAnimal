@@ -30,7 +30,7 @@ const Header = () => {
         <div className="flex justify-end">
           <ul className="flex items-center border-r-2 ml-20 pl-11 border-zinc-400 relative">
             <li className="mx-3 hover:text-zinc-400">
-              <Link to="/tag">All photos</Link>
+              <Link to="/photos">All photos</Link>
             </li>
             <li className="mx-3 hover:text-zinc-400">
               <Link to="/">Business Ideas</Link>

@@ -8,17 +8,17 @@ import TagList from "../Components/Admin/tag/tagList";
 import TagCreate from "../Components/Admin/tag/tagCreate";
 import PictureList from "../Components/Admin/picture/pictureList";
 import CreatePicture from "../Components/Admin/picture/createPicture";
-import LayoutGallery from "../Layouts/layoutGallery";
-import GalleryImage from "../Components/Gallery";
 import LayoutPictureManagement from "../Layouts/layoutPictureManagement";
 import RequestedPictures from "../Components/Admin/picture/requestedPictures";
 import UserList from "../Components/Admin/user/userList";
+import LayoutGallery from "../Layouts/layoutGallery";
 import HomePage from "../Components/HomePage";
 import MyPictureList from "../Components/MyPictureList";
 import Upload from "../Components/upload";
 import ChartReview from "../Components/Admin/reviews/chartReview";
 import DetailPicture from "../Components/DetailPics";
 import NotFound from "../Components/notFound";
+import Gallery from "../Components/Gallery";
 
 export const mainRoute = (auth) => [
   { path: "home", element: <Navigate to="/" /> },
@@ -44,7 +44,14 @@ export const mainRoute = (auth) => [
           <Navigate to="/auth/login" />
         ),
       },
-      { path: "/photos/:id", element: <DetailPicture /> },
+      {
+        path: "/photos",
+        element: <LayoutGallery />,
+        children: [
+          { path: "", element: <Gallery /> },
+          { path: ":id", element: <DetailPicture /> },
+        ],
+      },
       { path: "*", element: <Navigate to="/not-found" /> },
     ],
   },
@@ -104,14 +111,3 @@ export const adminRoute = (auth) => {
     },
   ];
 };
-
-export const galleryRoute = () => [
-  {
-    path: "/tag",
-    element: <LayoutGallery />,
-    children: [
-      { path: "", element: <GalleryImage /> },
-      { path: "*", element: <Navigate to="/not-found" /> },
-    ],
-  },
-];

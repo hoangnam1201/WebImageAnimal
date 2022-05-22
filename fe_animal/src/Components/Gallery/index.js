@@ -8,6 +8,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import ReviewDialog from "../dialog/reviewDialog";
 import { baseURL } from "../../api/instanceAxios";
 import { LinearProgress } from "@mui/material";
+import CarouselTag from "../CarouselTags.js";
 
 const GalleryImage = () => {
   const picData = useSelector(pictureSelector);
@@ -45,12 +46,13 @@ const GalleryImage = () => {
         take: picData.take,
       })
     );
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [location]);
 
   return (
     <>
+      <CarouselTag />
       <div className="gap-4 py-10 xl:px-12 px-6">
-        <ReviewDialog />
         <p className="text-white text-5xl mb-5 font-bold capitalize">
           {location.state?.message ? location.state?.message : "All Photos"}
         </p>

@@ -138,7 +138,7 @@ const SearchDialog = forwardRef(({ title, onClose, ...rest }, ref) => {
                   <div key={t.id}>
                     <ListItemButton
                       onClick={() => {
-                        navigate("/tag", {
+                        navigate("/photos", {
                           state: {
                             tagIds: [t.id],
                             authorId: undefined,
@@ -179,7 +179,7 @@ const SearchDialog = forwardRef(({ title, onClose, ...rest }, ref) => {
                   <div key={t.id}>
                     <ListItemButton
                       onClick={() => {
-                        navigate("/tag", {
+                        navigate("/photos", {
                           state: {
                             tagIds: [],
                             authorId: t.id,

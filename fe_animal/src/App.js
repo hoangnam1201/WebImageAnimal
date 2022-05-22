@@ -1,6 +1,6 @@
 import { useRoutes, BrowserRouter as Router } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { adminRoute, authRoute, galleryRoute, mainRoute } from "./Routes";
+import { adminRoute, authRoute, mainRoute } from "./Routes";
 import { Provider } from "react-redux";
 import store from "./store";
 
@@ -11,7 +11,6 @@ const App = () => {
     ...mainRoute(cookies.infoUser),
     ...authRoute(cookies.infoUser),
     ...adminRoute(cookies.infoUser),
-    ...galleryRoute(),
   ]);
 
   return <>{routing}</>;

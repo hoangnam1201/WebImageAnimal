@@ -60,7 +60,7 @@ const CarouselTag = () => {
               return (
                 <SwiperSlide key={index}>
                   <Link
-                    to={`/tag`}
+                    to={`/photos`}
                     state={{
                       tagIds: [tag.id],
                       authorId: undefined,

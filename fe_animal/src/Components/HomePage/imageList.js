@@ -32,9 +32,17 @@ const ImageList = () => {
       <div className="gap-4 columns-4 px-10 mt-7">
         {tagData.list.map((item, index) => {
           return (
-            <Link key={index} to={`/tag/${item.id}`}>
+            <Link
+              key={index}
+              to={`/photos`}
+              state={{
+                tagIds: [item.id],
+                authorId: undefined,
+                message: `${item.name} photos`,
+              }}
+            >
               <div className="pt-3 relative">
-                <img src={item.src} className="w-full" />
+                <img src={item.src} className="w-full" alt={item.name} />
                 <h2 className="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl font-bold text-shadow-lg text-white">
                   {item.name}
                 </h2>
