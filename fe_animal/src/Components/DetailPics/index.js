@@ -7,7 +7,7 @@ import { CircularProgress } from "@mui/material";
 const DetailPicture = () => {
   const params = useParams();
   const [picData, setPicData] = useState({});
-  console.log(picData);
+
   const getPicById = async () => {
     try {
       const res = await pictureApi.getPictureById(params.id);
@@ -16,6 +16,7 @@ const DetailPicture = () => {
       console.log(err);
     }
   };
+
   useEffect(() => {
     getPicById();
   }, [params.id]);
@@ -25,6 +26,7 @@ const DetailPicture = () => {
     const extention = pic?.src?.substring(index);
     return baseURL + "file/dowload/" + pic.id + extention;
   };
+  
   return (
     <div>
       <div className="bg-black text-white">

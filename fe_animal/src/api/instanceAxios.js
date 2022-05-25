@@ -23,7 +23,6 @@ instance.interceptors.response.use(
   (error) => {
     const status = error.response?.status;
     if (status === 401 && cookies.get("infoUser")) {
-      console.log("error logout");
       cookies.remove("infoUser", { path: "/" });
       Swal.fire("Login session expired", "Please log in again", "info").then(
         () => {

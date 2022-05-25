@@ -26,7 +26,7 @@ const MyPictureList = () => {
     dispatch(
       getMyPicutres({
         filter: pictureData.filter,
-        page: pictureData.page,
+        page: 0,
         take: pictureData.take,
       })
     );
@@ -90,7 +90,7 @@ const MyPictureList = () => {
               multiple
               onChange={(e, value) => {
                 dispatch(
-                  getPicutres({
+                  getMyPicutres({
                     filter: {
                       tagIds: value.map(({ id }) => id),
                     },
@@ -130,7 +130,7 @@ const MyPictureList = () => {
               pictureData.list.map((p, index) => {
                 return (
                   <div
-                    className={`gap-4 w-full font-semibold p-3 hover:bg-gray-100 rounded-sm flex ${
+                    className={`gap-4 w-full font-semibold p-3 hover:bg-gray-200 rounded-sm flex ${
                       p.id === pictureData?.current?.id &&
                       "border border-blue-400"
                     }`}

@@ -28,7 +28,7 @@ export const getPicutres = createAsyncThunk(
 );
 
 export const getMyPicutres = createAsyncThunk(
-  "pictures/get",
+  "pictures/get-my-pictures",
   async ({ filter: { tagIds }, page, take }, { rejectWithValue }) => {
     const response = await pictureApi
       .getMyPictures(tagIds, page, take)

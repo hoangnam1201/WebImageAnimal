@@ -2,10 +2,12 @@ import React, { useEffect } from "react";
 import DownloadIcon from "@mui/icons-material/Download";
 import { useDispatch, useSelector } from "react-redux";
 import { pictureSelector } from "../../store/selectors";
-import { getPicutresHash } from "../../store/slices/pictureSlice";
+import {
+  getPicutresHash,
+  resetPictures,
+} from "../../store/slices/pictureSlice";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
-import ReviewDialog from "../dialog/reviewDialog";
 import { baseURL } from "../../api/instanceAxios";
 import { LinearProgress } from "@mui/material";
 import CarouselTag from "../CarouselTags.js";
@@ -47,6 +49,9 @@ const GalleryImage = () => {
       })
     );
     window.scrollTo({ top: 0, behavior: "smooth" });
+    return () => {
+      dispatch(resetPictures());
+    };
   }, [location]);
 
   return (
@@ -75,7 +80,7 @@ const GalleryImage = () => {
                     className="w-full"
                     key={pic.id}
                   >
-                    <div className="relative group overflow-hidden mb-4">
+                    <div className="relative group mb-4">
                       <img
                         className="w-full"
                         src={pic.src}
