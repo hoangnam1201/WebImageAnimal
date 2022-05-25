@@ -24,16 +24,18 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "redux-thunk": "^2.4.1",
+    "serve": "^13.0.2",
     "styled-components": "^5.3.5",
     "sweetalert2": "^11.4.14",
     "swiper": "^8.1.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "serve -s build",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "npm run build"
   },
   "eslintConfig": {
     "extends": [
