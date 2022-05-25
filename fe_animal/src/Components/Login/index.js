@@ -49,7 +49,7 @@ const LoginPage = () => {
 
   const handleLoginKey = (e) => {
     if (e.key === "Enter") {
-      handleSubmit(loginHandler());
+      handleSubmit(loginHandler)();
     }
   };
   return (

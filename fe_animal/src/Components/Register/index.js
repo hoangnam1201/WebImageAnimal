@@ -46,7 +46,7 @@ const RegisterPage = () => {
 
   const handleRegisterKey = (e) => {
     if (e.key === "Enter") {
-      handleSubmit(registerHandler);
+      handleSubmit(registerHandler)();
     }
   };
 

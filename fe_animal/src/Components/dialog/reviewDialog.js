@@ -24,6 +24,7 @@ const ReviewDialog = () => {
 
   useEffect(() => {
     const timeout = showReview();
+    console.log("open");
     return () => {
       timeout && clearTimeout(timeout);
     };
@@ -36,7 +37,7 @@ const ReviewDialog = () => {
     ) {
       return setTimeout(() => {
         dialogRef.current.Open();
-      }, [600000]);
+      }, [300000]);
     }
     return null;
   };
