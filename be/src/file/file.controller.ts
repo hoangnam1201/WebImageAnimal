@@ -1,6 +1,8 @@
 import { Controller, Get, Param, Res } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
+import { createReadStream } from 'fs';
+import { join } from 'path';
 import { FileService } from './file.service';
 
 @Controller('file')

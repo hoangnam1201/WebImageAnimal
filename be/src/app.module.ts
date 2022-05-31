@@ -10,14 +10,10 @@ import { TagsModule } from './tags/tags.module';
 import { DecoratorsModule } from './decorators/decorators.module';
 import { FileModule } from './file/file.module';
 import { ReviewsModule } from './reviews/reviews.module';
-
 @Module({
   imports: [
     PrismaModule,
     ConfigModule.forRoot({ isGlobal: true }),
-    // FirebaseModule.forRoot({
-    //   googleApplicationCredential: '../src/animaldb-admin-firebase.json',
-    // }),
     AuthModule,
     UsersModule,
     PicturesModule,

@@ -6,7 +6,7 @@ import Header from "../Components/Header";
 const LayoutDefault = () => {
   return (
     <div className="flex flex-col min-h-screen bg-zinc-900">
-      <Header />
+      <Header music={true} />
       <div className="grow">
         <Outlet />
       </div>
