@@ -42,7 +42,11 @@ const ImageList = () => {
               }}
             >
               <div className="pt-3 relative">
-                <img src={item.src} className="w-full" alt={item.name} />
+                <img
+                  src={item.src}
+                  className="w-full pointer-events-none"
+                  alt={item.name}
+                />
                 <h2 className="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl font-bold text-shadow-lg text-white">
                   {item.name}
                 </h2>
