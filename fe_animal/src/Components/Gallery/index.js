@@ -82,7 +82,7 @@ const GalleryImage = () => {
                   >
                     <div className="relative group mb-4">
                       <img
-                        className="w-full"
+                        className="w-full pointer-events-none"
                         src={pic.src}
                         alt={pic.title}
                         loading="lazy"

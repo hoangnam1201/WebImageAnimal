@@ -26,7 +26,7 @@ const DetailPicture = () => {
     const extention = pic?.src?.substring(index);
     return baseURL + "file/dowload/" + pic.id + extention;
   };
-  
+
   return (
     <div>
       <div className="bg-black text-white">
@@ -41,8 +41,8 @@ const DetailPicture = () => {
         <div className="w-1/4 flex flex-col pl-20">
           <h2 className="font-bold text-3xl py-10">{picData?.title}</h2>
           <h3>
-            Photo of two customized cars on a city side street. One car is
-            raised up and the other is very low.
+            Images are collected from all sources on the internet and shared by
+            users on the website.
           </h3>
           <a
             rel="noreferrer"
@@ -68,7 +68,11 @@ const DetailPicture = () => {
         </div>
         <div className="w-3/4 flex justify-center items-center">
           {picData.src && (
-            <img className="w-3/4 h-3/4" src={picData.src} alt="img1" />
+            <img
+              className="w-3/4 h-3/4 pointer-events-none"
+              src={picData.src}
+              alt="img1"
+            />
           )}
           {!picData.src && <CircularProgress sx={{ color: "white" }} />}
         </div>

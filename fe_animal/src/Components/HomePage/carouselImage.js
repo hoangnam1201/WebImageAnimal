@@ -55,7 +55,11 @@ const CarouselImage = () => {
               return (
                 <SwiperSlide key={index} className="h-full">
                   <Link to={`/photos/${pic.id}`}>
-                    <img src={pic.src} alt="image1" className="h-full" />
+                    <img
+                      src={pic.src}
+                      alt="image1"
+                      className="h-full pointer-events-none"
+                    />
                   </Link>
                 </SwiperSlide>
               );
