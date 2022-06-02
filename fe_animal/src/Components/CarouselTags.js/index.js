@@ -1,4 +1,3 @@
-import { Autocomplete, Button, IconButton, TextField } from "@mui/material";
 import React, { useEffect, useRef } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { Navigation } from "swiper";
@@ -24,27 +23,13 @@ const CarouselTag = () => {
 
   return (
     <div className="xl:px-12 px-6">
-      <SearchDialog
-        ref={dialogRef}
-        onClose={() => {
-          dialogRef.current.Close();
-        }}
-      />
-      <div className="flex justify-between items-center py-16">
+      <div className="py-16">
         <div className="text-white">
           <h2 className="text-3xl font-bold">Download new HD photos</h2>
           <h3 className="text-lg w-3/4">
             New high definition photos are being added every week! These public
             domain images are free to use for personal or commercial purposes.
           </h3>
-        </div>
-        <div className="flex items-center bg-white rounded overflow-hidden min-w-max">
-          <div className="h-full" onClick={() => dialogRef.current.Open()}>
-            <input className=" outline-none py-2" disabled />
-          </div>
-          <label className="p-4" htmlFor="searchInput">
-            <SearchIcon />
-          </label>
         </div>
       </div>
       <div>

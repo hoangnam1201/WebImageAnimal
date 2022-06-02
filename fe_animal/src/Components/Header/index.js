@@ -1,15 +1,18 @@
 import { Button } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../Assets/logo.png";
+import SearchIcon from "@mui/icons-material/Search";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
 import MusicNote from "@mui/icons-material/MusicNote";
+import SearchDialog from "../dialog/searchDialog";
 
-const Header = ({ music, ...rest }) => {
+const Header = ({ music = false, ...rest }) => {
   const [cookies, _, removeCookies] = useCookies(["infoUser"]);
   const navigate = useNavigate();
   const [audioState, setAudioState] = useState(null);
+  const dialogRef = useRef();
 
   const [rainAudio] = useState(
     new Audio("https://imagebe.herokuapp.com/public/rain.mp3")
@@ -17,10 +20,16 @@ const Header = ({ music, ...rest }) => {
   const [spiritAudio] = useState(
     new Audio("https://imagebe.herokuapp.com/public/spirit-blossom.mp3")
   );
+
   useEffect(() => {
+    const handle = (e) => {
+      if (e.key === "/" && e.ctrlKey) dialogRef.current.Open();
+    };
+    document.addEventListener("keydown", handle);
     return () => {
       rainAudio.pause();
       spiritAudio.pause();
+      document.removeEventListener("keydown", handle);
     };
   }, []);
 
@@ -56,6 +65,12 @@ const Header = ({ music, ...rest }) => {
 
   return (
     <nav className="relative shadow-md z-10 grow-0">
+      <SearchDialog
+        ref={dialogRef}
+        onClose={() => {
+          dialogRef.current.Close();
+        }}
+      />
       <div className="w-full h-full absolute bg-black opacity-50 top-0 left-0" />
       <div className="flex justify-between  items-center font-400 text-gray-200 relative z-0">
         <Link to="/" className="ml-5 pl-10">
@@ -63,8 +78,37 @@ const Header = ({ music, ...rest }) => {
         </Link>
         <div className="flex justify-end">
           <ul className="flex items-center border-r-2 ml-20 pl-11 border-zinc-400 relative">
+            <li>
+              <div
+                className="flex items-center bg-white rounded-lg overflow-hidden min-w-max"
+                onClick={() => dialogRef.current.Open()}
+              >
+                <label className="p-2" htmlFor="searchInput">
+                  <SearchIcon sx={{ color: "gray" }} />
+                </label>
+                <div className="h-full text-gray-700">
+                  <input
+                    className=" outline-none p-2 w-32 text-sm"
+                    disabled
+                    value="Search..."
+                  />
+                </div>
+                <div className="text-gray-700 text-xs font-bold">
+                  <p className=" border-4 mr-1 p-1 rounded-lg cursor-default">ctrl + /</p>
+                </div>
+              </div>
+            </li>
+            <li className="mx-3 hover:text-zinc-400">
+              <Link to="/photos">All photos</Link>
+            </li>
+            <li className="mx-3 hover:text-zinc-400">
+              <Link to="/">Business Ideas</Link>
+            </li>
+            <li className="mx-3 hover:text-zinc-400">
+              <Link to="/upload">Upload</Link>
+            </li>
             {music && (
-              <li className="group relative">
+              <li className="group relative px-2">
                 <MusicNote color={!audioState ? "default" : "info"} />
                 <div className=" absolute z-10 bg-white text-gray-700 p-3 left-1/2 transform -translate-x-1/2 whitespace-nowrap hidden gap-4 flex-col group-hover:flex">
                   <div
@@ -152,15 +196,6 @@ const Header = ({ music, ...rest }) => {
                 </div>
               </li>
             )}
-            <li className="mx-3 hover:text-zinc-400">
-              <Link to="/photos">All photos</Link>
-            </li>
-            <li className="mx-3 hover:text-zinc-400">
-              <Link to="/">Business Ideas</Link>
-            </li>
-            <li className="mx-3 hover:text-zinc-400">
-              <Link to="/upload">Upload</Link>
-            </li>
           </ul>
           {cookies.infoUser ? (
             <div className="flex px-4 mr-10 items-center gap-2">
