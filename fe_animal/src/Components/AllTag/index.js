@@ -1,38 +1,24 @@
-import { Button } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { tagSelector } from "../../store/selectors";
 import { getTag } from "../../store/slices/tagSlice";
 import { Link } from "react-router-dom";
+import { LinearProgress } from "@mui/material";
 
-const ImageList = () => {
+const ViewAllTag = () => {
   const tagData = useSelector(tagSelector);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getTag());
   }, []);
-
   return (
-    <div className="p-12 text-gray-500">
-      <div className="flex justify-between mx-16 items-center">
-        <div>
-          <h2 className="font-bold text-4xl mb-4">
-            Browse high-resolution photo collections
-          </h2>
-          <h4>Browse high-resolution photo collections</h4>
-        </div>
-        <Link to="/all-tag">
-          <Button
-            style={{ color: "white", borderColor: "white", height: "50px" }}
-            variant="outlined"
-          >
-            View all collections
-          </Button>
-        </Link>
+    <div className="mb-5">
+      <div>
+        <h3 className="text-3xl text-white p-10">All Collections</h3>
       </div>
       <div className="gap-4 columns-4 px-10 mt-7">
-        {tagData.list.slice(0, 10).map((item, index) => {
+        {tagData.list.map((item, index) => {
           return (
             <div className="pt-3 ">
               <Link
@@ -58,8 +44,15 @@ const ImageList = () => {
           );
         })}
       </div>
+      <div
+        className={`${
+          tagData?.loading === "loading" ? "visible" : "invisible"
+        }`}
+      >
+        <LinearProgress />
+      </div>
     </div>
   );
 };
 
-export default ImageList;
+export default ViewAllTag;

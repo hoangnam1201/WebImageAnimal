@@ -19,7 +19,7 @@ import ChartReview from "../Components/Admin/reviews/chartReview";
 import DetailPicture from "../Components/DetailPics";
 import NotFound from "../Components/notFound";
 import Gallery from "../Components/Gallery";
-
+import AllTag from "../Components/AllTag";
 export const mainRoute = (auth) => [
   { path: "home", element: <Navigate to="/" /> },
   { path: "not-found", element: <NotFound /> },
@@ -51,6 +51,11 @@ export const mainRoute = (auth) => [
           { path: "", element: <Gallery /> },
           { path: ":id", element: <DetailPicture /> },
         ],
+      },
+      {
+        path: "/all-tag",
+        element: <LayoutGallery />,
+        children: [{ path: "", element: <AllTag /> }],
       },
       { path: "*", element: <Navigate to="/not-found" /> },
     ],

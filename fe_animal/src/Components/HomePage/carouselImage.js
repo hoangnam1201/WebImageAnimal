@@ -34,7 +34,7 @@ const CarouselImage = () => {
           <h2 className="font-bold text-4xl mb-4">Top free pics this week</h2>
           <h4>Stunning stock images, perfect for blogs and websites</h4>
         </div>
-        <Link to="/tag">
+        <Link to="/photos">
           <Button
             style={{ color: "white", borderColor: "white", height: "50px" }}
             variant="outlined"
